@@ -1,10 +1,33 @@
+/* eslint-disable prettier/prettier */
 import React from 'react';
-import {Text, View} from 'react-native';
+import {ScrollView, Text, View} from 'react-native';
+import Footer from '../components/Footer';
+import {NavigationProp} from '@react-navigation/native';
 
-export default function BloodRequestDetails() {
+export default function BloodRequestDetails({
+  navigation,
+}: {
+  navigation: NavigationProp<any>;
+}) {
   return (
-    <View>
-      <Text>Blood request details</Text>
-    </View>
+    <React.Fragment>
+      <View
+        style={{
+          borderWidth: 4,
+          borderColor: '#AE0000',
+          flex: 1,
+          backgroundColor: '#ffffff',
+        }}>
+        <ScrollView
+          style={{
+            flex: 1,
+          }}>
+          <View>
+            <Text>রক্তের অাবেদনের বিস্তারিত তথ্য এখানে দেখানো হবে</Text>
+          </View>
+        </ScrollView>
+        <Footer navigation={navigation} />
+      </View>
+    </React.Fragment>
   );
 }
