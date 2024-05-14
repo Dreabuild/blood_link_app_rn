@@ -14,6 +14,16 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		7699B88040F8A987B510C191 /* libPods-bloodlinkApp-bloodlinkAppTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-bloodlinkApp-bloodlinkAppTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		78F36D0635824121A4CA6D0E /* Li Ador Noirrit Bold Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 85664018D4C5469BA1CCFF47 /* Li Ador Noirrit Bold Italic.ttf */; };
+		98E340ABE621410BA3E5D8C5 /* Li Ador Noirrit Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 48C600C756424CF59D1E1D53 /* Li Ador Noirrit Bold.ttf */; };
+		62D8F4490AB44977B9B11140 /* Li Ador Noirrit ExtraLight Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 84083E330F8B416AB26BE547 /* Li Ador Noirrit ExtraLight Italic.ttf */; };
+		FDE5D58055D34A77A41E02A5 /* Li Ador Noirrit ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9B2E7002632646FC9E71B2F0 /* Li Ador Noirrit ExtraLight.ttf */; };
+		EC75AE31647843D697C3C059 /* Li Ador Noirrit Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 27D5FEA18EE743799D0E1071 /* Li Ador Noirrit Italic.ttf */; };
+		82578380EC024427BE479EE3 /* Li Ador Noirrit Light Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F2DE22666C3F479AA7F368A5 /* Li Ador Noirrit Light Italic.ttf */; };
+		4ACEEC7F3BF34EEEB0A2821E /* Li Ador Noirrit Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BC87B80F171945EA92C09D6F /* Li Ador Noirrit Light.ttf */; };
+		EA4ADC1DBDC74340AE992FCF /* Li Ador Noirrit Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 65545DEB4E5C47078D0C7AA0 /* Li Ador Noirrit Regular.ttf */; };
+		ADACC73932D04EB3872FB00B /* Li Ador Noirrit SemiBold Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 008487CD95254BC9ACE0254A /* Li Ador Noirrit SemiBold Italic.ttf */; };
+		8B01EF8903F34323B924E1EE /* Li Ador Noirrit SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FCC0431E4B4446DFA85C2215 /* Li Ador Noirrit SemiBold.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,7 +46,7 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = bloodlinkApp/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = bloodlinkApp/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = bloodlinkApp/main.m; sourceTree = "<group>"; };
-	    13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = bloodlinkApp/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = bloodlinkApp/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		19F6CBCC0A4E27FBF8BF4A61 /* libPods-bloodlinkApp-bloodlinkAppTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-bloodlinkApp-bloodlinkAppTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B4392A12AC88292D35C810B /* Pods-bloodlinkApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bloodlinkApp.debug.xcconfig"; path = "Target Support Files/Pods-bloodlinkApp/Pods-bloodlinkApp.debug.xcconfig"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-bloodlinkApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bloodlinkApp.release.xcconfig"; path = "Target Support Files/Pods-bloodlinkApp/Pods-bloodlinkApp.release.xcconfig"; sourceTree = "<group>"; };
@@ -45,6 +55,16 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = bloodlinkApp/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-bloodlinkApp-bloodlinkAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bloodlinkApp-bloodlinkAppTests.release.xcconfig"; path = "Target Support Files/Pods-bloodlinkApp-bloodlinkAppTests/Pods-bloodlinkApp-bloodlinkAppTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		85664018D4C5469BA1CCFF47 /* Li Ador Noirrit Bold Italic.ttf */ = {isa = PBXFileReference; name = "Li Ador Noirrit Bold Italic.ttf"; path = "../assets/fonts/Li Ador Noirrit Bold Italic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		48C600C756424CF59D1E1D53 /* Li Ador Noirrit Bold.ttf */ = {isa = PBXFileReference; name = "Li Ador Noirrit Bold.ttf"; path = "../assets/fonts/Li Ador Noirrit Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		84083E330F8B416AB26BE547 /* Li Ador Noirrit ExtraLight Italic.ttf */ = {isa = PBXFileReference; name = "Li Ador Noirrit ExtraLight Italic.ttf"; path = "../assets/fonts/Li Ador Noirrit ExtraLight Italic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		9B2E7002632646FC9E71B2F0 /* Li Ador Noirrit ExtraLight.ttf */ = {isa = PBXFileReference; name = "Li Ador Noirrit ExtraLight.ttf"; path = "../assets/fonts/Li Ador Noirrit ExtraLight.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		27D5FEA18EE743799D0E1071 /* Li Ador Noirrit Italic.ttf */ = {isa = PBXFileReference; name = "Li Ador Noirrit Italic.ttf"; path = "../assets/fonts/Li Ador Noirrit Italic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		F2DE22666C3F479AA7F368A5 /* Li Ador Noirrit Light Italic.ttf */ = {isa = PBXFileReference; name = "Li Ador Noirrit Light Italic.ttf"; path = "../assets/fonts/Li Ador Noirrit Light Italic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		BC87B80F171945EA92C09D6F /* Li Ador Noirrit Light.ttf */ = {isa = PBXFileReference; name = "Li Ador Noirrit Light.ttf"; path = "../assets/fonts/Li Ador Noirrit Light.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		65545DEB4E5C47078D0C7AA0 /* Li Ador Noirrit Regular.ttf */ = {isa = PBXFileReference; name = "Li Ador Noirrit Regular.ttf"; path = "../assets/fonts/Li Ador Noirrit Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		008487CD95254BC9ACE0254A /* Li Ador Noirrit SemiBold Italic.ttf */ = {isa = PBXFileReference; name = "Li Ador Noirrit SemiBold Italic.ttf"; path = "../assets/fonts/Li Ador Noirrit SemiBold Italic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		FCC0431E4B4446DFA85C2215 /* Li Ador Noirrit SemiBold.ttf */ = {isa = PBXFileReference; name = "Li Ador Noirrit SemiBold.ttf"; path = "../assets/fonts/Li Ador Noirrit SemiBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,6 +144,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
+				B270F8730FDA48A3B29B1343 /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -149,6 +170,24 @@
 			);
 			path = Pods;
 			sourceTree = "<group>";
+		};
+		B270F8730FDA48A3B29B1343 /* Resources */ = {
+			isa = "PBXGroup";
+			children = (
+				85664018D4C5469BA1CCFF47 /* Li Ador Noirrit Bold Italic.ttf */,
+				48C600C756424CF59D1E1D53 /* Li Ador Noirrit Bold.ttf */,
+				84083E330F8B416AB26BE547 /* Li Ador Noirrit ExtraLight Italic.ttf */,
+				9B2E7002632646FC9E71B2F0 /* Li Ador Noirrit ExtraLight.ttf */,
+				27D5FEA18EE743799D0E1071 /* Li Ador Noirrit Italic.ttf */,
+				F2DE22666C3F479AA7F368A5 /* Li Ador Noirrit Light Italic.ttf */,
+				BC87B80F171945EA92C09D6F /* Li Ador Noirrit Light.ttf */,
+				65545DEB4E5C47078D0C7AA0 /* Li Ador Noirrit Regular.ttf */,
+				008487CD95254BC9ACE0254A /* Li Ador Noirrit SemiBold Italic.ttf */,
+				FCC0431E4B4446DFA85C2215 /* Li Ador Noirrit SemiBold.ttf */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+			path = "";
 		};
 /* End PBXGroup section */
 
@@ -245,6 +284,16 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				78F36D0635824121A4CA6D0E /* Li Ador Noirrit Bold Italic.ttf in Resources */,
+				98E340ABE621410BA3E5D8C5 /* Li Ador Noirrit Bold.ttf in Resources */,
+				62D8F4490AB44977B9B11140 /* Li Ador Noirrit ExtraLight Italic.ttf in Resources */,
+				FDE5D58055D34A77A41E02A5 /* Li Ador Noirrit ExtraLight.ttf in Resources */,
+				EC75AE31647843D697C3C059 /* Li Ador Noirrit Italic.ttf in Resources */,
+				82578380EC024427BE479EE3 /* Li Ador Noirrit Light Italic.ttf in Resources */,
+				4ACEEC7F3BF34EEEB0A2821E /* Li Ador Noirrit Light.ttf in Resources */,
+				EA4ADC1DBDC74340AE992FCF /* Li Ador Noirrit Regular.ttf in Resources */,
+				ADACC73932D04EB3872FB00B /* Li Ador Noirrit SemiBold Italic.ttf in Resources */,
+				8B01EF8903F34323B924E1EE /* Li Ador Noirrit SemiBold.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

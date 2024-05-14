@@ -1,8 +1,8 @@
 /* eslint-disable prettier/prettier */
+import {NavigationProp} from '@react-navigation/native';
 import React from 'react';
 import {ScrollView, Text, View} from 'react-native';
 import Footer from '../components/Footer';
-import {NavigationProp} from '@react-navigation/native';
 
 export default function BloodBankList({
   navigation,
