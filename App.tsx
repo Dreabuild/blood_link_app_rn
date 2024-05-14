@@ -5,16 +5,17 @@
  * @format
  */
 
-import React from 'react';
-import {StatusBar, Text, View} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
-import Home from './screens/Home';
-import BloodRequestForum from './screens/BloodRequestForum';
+import React from 'react';
+import {StatusBar} from 'react-native';
 import BloodBankDetails from './screens/BloodBankDetails';
 import BloodBankList from './screens/BloodBankList';
+import BloodRequestForum from './screens/BloodRequestForum';
+import Home from './screens/Home';
 
 import {NavigationContainer} from '@react-navigation/native';
 import Header from './components/Header';
+import BloodSeekerDetails from './screens/BloodSeekerDetails';
 
 const Stack = createStackNavigator();
 
@@ -31,6 +32,10 @@ function App(): React.JSX.Element {
         <Stack.Screen name="BloodRequestForum" component={BloodRequestForum} />
         <Stack.Screen name="BloodBankDetails" component={BloodBankDetails} />
         <Stack.Screen name="BloodBankList" component={BloodBankList} />
+        <Stack.Screen
+          name="BloodSeekerDetails"
+          component={BloodSeekerDetails}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

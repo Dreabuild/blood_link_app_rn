@@ -1,0 +1,45 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/Li Ador Noirrit Bold Italic.ttf",
+      "sha1": "52bed420ba6b08458600a1573bf3de0b2e2b943a"
+    },
+    {
+      "path": "assets/fonts/Li Ador Noirrit Bold.ttf",
+      "sha1": "2c71191f7d624a171e60ed4c9f5bd48ee3cb0cfb"
+    },
+    {
+      "path": "assets/fonts/Li Ador Noirrit ExtraLight Italic.ttf",
+      "sha1": "f047d2653804028be9bd5e3ed4ed0accc8147ef0"
+    },
+    {
+      "path": "assets/fonts/Li Ador Noirrit ExtraLight.ttf",
+      "sha1": "d3d29ae4ecbdabade82b5f58d00fffc426b9fdfa"
+    },
+    {
+      "path": "assets/fonts/Li Ador Noirrit Italic.ttf",
+      "sha1": "931b5abfe679c06962c0c1e837c9567df7c8adc4"
+    },
+    {
+      "path": "assets/fonts/Li Ador Noirrit Light Italic.ttf",
+      "sha1": "b50a547cd400a0ee2409cfb356ec823b4d37b64f"
+    },
+    {
+      "path": "assets/fonts/Li Ador Noirrit Light.ttf",
+      "sha1": "02778dffe81451f5518f79ea7c2390d285fa455b"
+    },
+    {
+      "path": "assets/fonts/Li Ador Noirrit Regular.ttf",
+      "sha1": "43489528720379cefc5ed7ee7bf92991cc2851dd"
+    },
+    {
+      "path": "assets/fonts/Li Ador Noirrit SemiBold Italic.ttf",
+      "sha1": "81f0cf9fafc5b6d2533875ad99b38025218811eb"
+    },
+    {
+      "path": "assets/fonts/Li Ador Noirrit SemiBold.ttf",
+      "sha1": "8641de83012a8581446ae8464152904b9d7e1884"
+    }
+  ]
+}

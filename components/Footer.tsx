@@ -1,9 +1,8 @@
 /* eslint-disable prettier/prettier */
-/* eslint-disable react-native/no-inline-styles */
-import {NavigationProp} from '@react-navigation/native';
-import React, {useEffect} from 'react';
+
+import {NavigationProp, useRoute} from '@react-navigation/native';
+import React from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
-import {useRoute} from '@react-navigation/native';
 
 export default function Footer({
   navigation,
@@ -53,7 +52,7 @@ export default function Footer({
           alignItems: 'center',
         }}>
         <Text style={{color: '#AE0000', fontWeight: 600}}>
-          {route.name === 'BloodRequestForum' ? 'হোম' : 'নতুন অাবেদন'}
+          {route.name === 'BloodRequestForum' ? 'হোম' : 'নতুন আবেদন'}
         </Text>
       </TouchableOpacity>
     </View>

@@ -1,8 +1,8 @@
 /* eslint-disable prettier/prettier */
+import {NavigationProp} from '@react-navigation/native';
 import React from 'react';
 import {ScrollView, Text, View} from 'react-native';
 import Footer from '../components/Footer';
-import {NavigationProp} from '@react-navigation/native';
 
 export default function BloodRequestDetails({
   navigation,
@@ -23,7 +23,7 @@ export default function BloodRequestDetails({
             flex: 1,
           }}>
           <View>
-            <Text>রক্তের অাবেদনের বিস্তারিত তথ্য এখানে দেখানো হবে</Text>
+            <Text>রক্তের আবেদনের বিস্তারিত তথ্য এখানে দেখানো হবে</Text>
           </View>
         </ScrollView>
         <Footer navigation={navigation} />
