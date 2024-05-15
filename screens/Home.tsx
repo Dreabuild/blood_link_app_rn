@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import {NavigationProp} from '@react-navigation/native';
 import React, {useEffect} from 'react';
 import {Text, View} from 'react-native';
