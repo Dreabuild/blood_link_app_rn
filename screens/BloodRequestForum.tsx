@@ -1,13 +1,19 @@
 /* eslint-disable prettier/prettier */
 import {NavigationProp} from '@react-navigation/native';
 import React, {useState} from 'react';
-import {Controller, SubmitHandler, useForm} from 'react-hook-form';
+import {
+  Controller,
+  SubmitHandler,
+  useForm,
+  useFieldArray,
+} from 'react-hook-form';
 import {ScrollView, Text, TextInput, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import SelectDropdown from 'react-native-select-dropdown';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Footer from '../components/Footer';
 import {IBloodSeeker} from '../types/BloodSeeker';
+import CheckBox from 'react-native-check-box';
 
 const blood_groups = ['A+', 'B+', 'AB+', 'AB-', 'O-', 'O+', 'A-', 'B-'];
 
@@ -28,12 +34,12 @@ export default function BloodRequestForum({
       patient_problem: '',
       district: '',
       hospital_name: '',
-      mobile_number: '',
+      mobile_numbers: [{number: ''}],
       whatsapp_number: '',
       facebook_account_url: '',
       gender: '',
       relationship: '',
-      urgent: true,
+      urgent: false,
       description: '',
       delivery_time: '',
     },
@@ -42,6 +48,11 @@ export default function BloodRequestForum({
   const onSubmit: SubmitHandler<IBloodSeeker> = (data: IBloodSeeker) =>
     console.log(data);
 
+  const {fields, append, remove} = useFieldArray({
+    control,
+    name: 'mobile_numbers',
+  });
+  console.log(fields);
   return (
     <React.Fragment>
       <View
@@ -232,29 +243,54 @@ export default function BloodRequestForum({
                 )}
                 name={'hospital_name'}
               />
-              <Controller
-                control={control}
-                rules={{
-                  required: false,
-                }}
-                render={({field: {onChange, onBlur, value}}) => (
-                  <TextInput
-                    placeholder={'মোবাইল নাম্বার'}
-                    onBlur={onBlur}
-                    onChangeText={onChange}
-                    value={value}
-                    placeholderTextColor={'#989898'}
-                    style={{
-                      color: '#000',
-                      borderColor: '#000',
-                      borderWidth: 1,
-                      padding: 10,
-                      marginBottom: 20,
-                    }}
-                  />
-                )}
-                name={'mobile_number'}
-              />
+              {fields.map((field, index) => (
+                <Controller
+                  id={field.id}
+                  control={control}
+                  rules={{
+                    required: false,
+                  }}
+                  render={({field: {onChange, onBlur, value}}) => (
+                    <View
+                      style={{
+                        borderWidth: 1,
+                        borderColor: '#000',
+                        marginBottom: 20,
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                      }}>
+                      <TextInput
+                        placeholder={'মোবাইল নাম্বার'}
+                        onBlur={onBlur}
+                        onChangeText={onChange}
+                        value={value}
+                        placeholderTextColor={'#989898'}
+                        style={{
+                          color: '#000',
+                          borderColor: '#000',
+                          borderWidth: 0,
+                          width: index === fields.length - 1 ? '50%' : '100%',
+                        }}
+                      />
+                      {index === fields.length - 1 && (
+                        <TouchableOpacity
+                          onPress={() => append({number: ''})}
+                          style={{
+                            marginRight: 10,
+                            backgroundColor: '#BF0000',
+                            padding: 10,
+                            flexDirection: 'row',
+                          }}>
+                          <Icon name="plus" style={{color: '#fff'}} size={20} />
+                          <Text style={{color: '#fff'}}>অারো যোগ করুন</Text>
+                        </TouchableOpacity>
+                      )}
+                    </View>
+                  )}
+                  name={`mobile_numbers[${index}].number`}
+                />
+              ))}
               <Controller
                 control={control}
                 rules={{
@@ -369,6 +405,26 @@ export default function BloodRequestForum({
                   />
                 )}
                 name={'delivery_time'}
+              />
+              <Controller
+                name="urgent"
+                control={control}
+                rules={{
+                  required: false,
+                }}
+                render={({field: {onChange, onBlur, value}}) => (
+                  <CheckBox
+                    style={{flex: 1, marginBottom: 20}}
+                    onClick={() => {
+                      onChange(!value);
+                    }}
+                    checkBoxColor="#BF0000"
+                    rightTextStyle={{color: '#BF0000', fontWeight: 'bold'}}
+                    isChecked={value}
+                    // leftText={'CheckBox'}
+                    rightText="যত দ্রুত সম্ভব রক্তের প্রয়োজন"
+                  />
+                )}
               />
               <Controller
                 control={control}
