@@ -21,7 +21,11 @@ export default function Footer({
       <TouchableOpacity
         onPress={() =>
           navigation.navigate(
-            route.name === 'BloodBankList' ? 'Home' : 'BloodBankList',
+            route.name === 'BloodBankList'
+              ? 'Home'
+              : route.name === 'BloodBankDetails'
+              ? 'Home'
+              : 'BloodBankList',
           )
         }
         style={{
@@ -34,7 +38,11 @@ export default function Footer({
           alignItems: 'center',
         }}>
         <Text style={{color: '#AE0000', fontWeight: 600}}>
-          {route.name === 'BloodBankList' ? 'হোম' : 'ব্যাংক হোম'}
+          {route.name === 'BloodBankList'
+            ? 'হোম'
+            : route.name === 'BloodBankDetails'
+            ? 'হোম'
+            : 'ব্যাংক হোম'}
         </Text>
       </TouchableOpacity>
       <TouchableOpacity
