@@ -1,15 +1,39 @@
 /* eslint-disable prettier/prettier */
 import {NavigationProp} from '@react-navigation/native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Image, ScrollView, Text, TouchableOpacity, View} from 'react-native';
-import Footer from '../components/Footer';
+import call from 'react-native-phone-call';
 import FeatherIcon from 'react-native-vector-icons/Feather';
+import Footer from '../components/Footer';
 
 export default function BloodBankList({
   navigation,
 }: {
   navigation: NavigationProp<any>;
 }) {
+  const [bloodBanks, setBloodBanks] = useState([]);
+  useEffect(() => {
+    const loadBloodBank = async () => {
+      const url = 'https://blood-link-backend-iota.vercel.app/api/v1/bank';
+      const res = await fetch(url);
+      const {data} = await res.json();
+      setBloodBanks(data);
+    };
+    loadBloodBank();
+  }, [bloodBanks]);
+
+  const toEn = (n: any): string =>
+    n.replace(/[০-৯]/g, (d: any) => '০১২৩৪৫৬৭৮৯'.indexOf(d));
+  const triggerCall = (phone: string) => {
+    const newPhone = toEn(phone).replace('+', '').replaceAll('-', '');
+    const args = {
+      number: '018817452', // String value with the number to call
+      prompt: false, // Optional boolean property. Determines if the user should be prompted prior to the call
+    };
+
+    call(args).catch(console.error);
+  };
+
   return (
     <React.Fragment>
       <View
@@ -31,7 +55,7 @@ export default function BloodBankList({
               paddingVertical: 40,
               gap: 10,
             }}>
-            {[1, 2, 3].map((item, index) => (
+            {bloodBanks.map(({id, name, address, image, contact}, index) => (
               <View
                 style={{
                   width: '100%',
@@ -40,15 +64,12 @@ export default function BloodBankList({
                   borderColor: '#1e1e1e',
                 }}>
                 <View style={{width: '60%', padding: 20, gap: 3}}>
-                  <Text style={{color: '#BF0000'}}>#DHK01</Text>
-                  <Text style={{color: '#000000'}}>
-                    LABAID HOSPITAL BLOOD BANK
-                  </Text>
-                  <Text style={{color: '#989898'}}>
-                    House #69, Road #9/A, Dhanmondi R/A
-                  </Text>
+                  <Text style={{color: '#BF0000'}}>#{id}</Text>
+                  <Text style={{color: '#000000'}}>{name}</Text>
+                  <Text style={{color: '#989898'}}>{address}</Text>
                   <View style={{marginTop: 18, flexDirection: 'row', gap: 8}}>
                     <TouchableOpacity
+                      onPress={() => triggerCall(contact[0])}
                       style={{
                         backgroundColor: '#BF0000',
                         flexDirection: 'row',
@@ -93,7 +114,7 @@ export default function BloodBankList({
                 <Image
                   style={{width: '40%', height: '100%'}}
                   source={{
-                    uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Hospital-de-Bellvitge.jpg/640px-Hospital-de-Bellvitge.jpg',
+                    uri: image,
                   }}
                 />
               </View>
