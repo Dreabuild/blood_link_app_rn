@@ -4,16 +4,16 @@ import React, {useState} from 'react';
 import {
   Controller,
   SubmitHandler,
-  useForm,
   useFieldArray,
+  useForm,
 } from 'react-hook-form';
 import {ScrollView, Text, TextInput, View} from 'react-native';
+import CheckBox from 'react-native-check-box';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import SelectDropdown from 'react-native-select-dropdown';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Footer from '../components/Footer';
 import {IBloodSeeker} from '../types/BloodSeeker';
-import CheckBox from 'react-native-check-box';
 
 const blood_groups = ['A+', 'B+', 'AB+', 'AB-', 'O-', 'O+', 'A-', 'B-'];
 
@@ -283,7 +283,7 @@ export default function BloodRequestForum({
                             flexDirection: 'row',
                           }}>
                           <Icon name="plus" style={{color: '#fff'}} size={20} />
-                          <Text style={{color: '#fff'}}>অারো যোগ করুন</Text>
+                          <Text style={{color: '#fff'}}>আরো যোগ করুন</Text>
                         </TouchableOpacity>
                       )}
                     </View>

@@ -1,7 +1,14 @@
 /* eslint-disable prettier/prettier */
 import {NavigationProp} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
-import {Image, ScrollView, Text, TouchableOpacity, View} from 'react-native';
+import {
+  Image,
+  Linking,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import call from 'react-native-phone-call';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import Footer from '../components/Footer';
@@ -25,13 +32,27 @@ export default function BloodBankList({
   const toEn = (n: any): string =>
     n.replace(/[০-৯]/g, (d: any) => '০১২৩৪৫৬৭৮৯'.indexOf(d));
   const triggerCall = (phone: string) => {
-    const newPhone = toEn(phone).replace('+', '').replaceAll('-', '');
     const args = {
-      number: '018817452', // String value with the number to call
+      number: toEn(phone), // String value with the number to call
       prompt: false, // Optional boolean property. Determines if the user should be prompted prior to the call
+      skipCanOpen: true, // Skip the canOpenURL check
     };
 
     call(args).catch(console.error);
+  };
+
+  const triggerMsg = () => {
+    const url = 'sms:+123456789';
+
+    Linking.canOpenURL(url)
+      .then(supported => {
+        if (!supported) {
+          console.log('Unsupported url: ' + url);
+        } else {
+          return Linking.openURL(url);
+        }
+      })
+      .catch(err => console.error('An error occurred', err));
   };
 
   return (
@@ -57,9 +78,11 @@ export default function BloodBankList({
             }}>
             {bloodBanks.map(({id, name, address, image, contact}, index) => (
               <View
+                key={index}
                 style={{
                   width: '100%',
                   flexDirection: 'row',
+                  justifyContent: 'space-between',
                   borderWidth: 1,
                   borderColor: '#1e1e1e',
                 }}>
@@ -88,6 +111,7 @@ export default function BloodBankList({
                       </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
+                      onPress={triggerMsg}
                       style={{
                         backgroundColor: '#BF0000',
                         flexDirection: 'row',
@@ -112,7 +136,7 @@ export default function BloodBankList({
                   </View>
                 </View>
                 <Image
-                  style={{width: '40%', height: '100%'}}
+                  style={{width: '33%', height: '100%', gap: 3}}
                   source={{
                     uri: image,
                   }}
