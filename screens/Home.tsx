@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable prettier/prettier */
 import {NavigationProp} from '@react-navigation/native';
 import React, {useEffect} from 'react';
@@ -21,9 +22,9 @@ export default function Home({navigation}: {navigation: NavigationProp<any>}) {
   });
   const [bloodData, setBloodData] = React.useState([]);
 
-  useEffect(() => {
-    const onSelectedBloodGroup = async () => {
-      const url = `${API_URL}/request/${
+  const onSelectedBloodGroup = async () => {
+    try {
+      const url = `${API_URL}/request${
         selectedBloodGroup ? `?bloodGroup=${selectedBloodGroup}` : ''
       }${
         selectedZila.name
@@ -32,12 +33,23 @@ export default function Home({navigation}: {navigation: NavigationProp<any>}) {
             : `?district=${selectedZila.name}`
           : ''
       }`;
+      console.log(url);
       const res = await fetch(url);
       const {data} = await res.json();
+      console.log(data);
       setBloodData(data);
-    };
+    } catch (err: any) {
+      console.log(err.message);
+    }
+  };
+  useEffect(() => {
     onSelectedBloodGroup();
   }, [selectedBloodGroup, selectedZila]);
+
+  useEffect(() => {
+    console.log('run');
+    onSelectedBloodGroup();
+  }, []);
 
   return (
     <React.Fragment>
