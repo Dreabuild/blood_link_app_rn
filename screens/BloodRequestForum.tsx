@@ -1,17 +1,21 @@
 /* eslint-disable prettier/prettier */
 import {NavigationProp} from '@react-navigation/native';
+import moment from 'moment';
 import React, {useState} from 'react';
 import {Controller, useFieldArray, useForm} from 'react-hook-form';
 import {ScrollView, Text, TextInput, View} from 'react-native';
 import CheckBox from 'react-native-check-box';
+import DatePicker from 'react-native-date-picker';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import SelectDropdown from 'react-native-select-dropdown';
+import RNPickerSelect from 'react-native-picker-select';
+import Toast from 'react-native-toast-message';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Footer from '../components/Footer';
 import {API_URL} from '../config';
 import zillas from '../data/district.json';
+import {requestSchema} from '../types/BloodSeeker';
 
-const blood_groups = ['A+', 'B+', 'AB+', 'AB-', 'O-', 'O+', 'A-', 'B-'];
+// const blood_groups = ['A+', 'B+', 'AB+', 'AB-', 'O-', 'O+', 'A-', 'B-'];
 const defaultValues = {
   blood_group: '',
   hemoglobin_point: '',
@@ -37,32 +41,77 @@ export default function BloodRequestForum({
   const {
     control,
     handleSubmit,
-    formState: {},
+    formState: {errors},
   } = useForm({
     defaultValues,
   });
 
-  const [selectedZila, setSelectedZila] = useState({
-    bn_name: '',
-    name: '',
-  });
-
   const onSubmit = async (data: any) => {
-    const res = await fetch(`${API_URL}/request`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({...data, selectedZila}),
-    });
-    const newReq = await res.json();
-    console.log(newReq);
+    try {
+      const modifiedData = {
+        blood_group: data.blood_group,
+        hemoglobin_point: Number(data.hemoglobin_point),
+        amount_of_blood: Number(data.amount_of_blood),
+        patient_problem: data.patient_problem,
+        district: data.district,
+        hospital_name: data.hospital_name,
+        relationship: data.relationship,
+        mobile_number: ['01711503992'],
+        whatsapp_number: data.whatsapp_number,
+        facebook_account_url: data.facebook_account_url,
+        gender: data.gender,
+        delivery_time: date,
+        urgent: data.urgent,
+        description: data.description,
+      };
+      const safeData = requestSchema.safeParse(modifiedData);
+      if (safeData.error) {
+        Toast.show({
+          type: 'error',
+          text1: 'Blood Request Failed',
+          text2: 'Please fill up all the requried fields',
+        });
+        console.log(safeData.error);
+        return;
+      }
+
+      const url = `${API_URL}/request/create`;
+      await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...safeData.data,
+        }),
+      });
+      Toast.show({
+        type: 'success',
+        text1: 'Blood Request Successful',
+        text2: 'New Blood Request Created Successfully!',
+      });
+      navigation.navigate('Home');
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Blood Request Failed',
+        text2: 'Something went wrong. Try again',
+      });
+    }
   };
 
   const {fields, append} = useFieldArray({
     control,
     name: 'mobile_numbers',
   });
+
+  const newZillas = zillas.data.map(zilla => {
+    return {label: zilla.bn_name, value: zilla.name};
+  });
+
+  const [date, setDate] = useState(new Date());
+  const [open, setOpen] = useState(false);
+
   return (
     <React.Fragment>
       <View
@@ -101,47 +150,40 @@ export default function BloodRequestForum({
               <Controller
                 control={control}
                 rules={{
-                  required: true,
+                  required: false,
                 }}
-                render={({field: {onChange}}) => (
-                  <SelectDropdown
-                    onSelect={onChange}
-                    data={blood_groups}
-                    renderItem={(item: any) => {
-                      return (
-                        <View>
-                          <Text style={{color: '#989898', padding: 10}}>
-                            {item}
-                          </Text>
-                        </View>
-                      );
-                    }}
-                    renderButton={(selectedItem, isOpened) => {
-                      return (
-                        <View
-                          style={{
-                            width: '100%',
-                            height: 45,
-                            backgroundColor: '#ffffff',
-                            alignItems: 'center',
-                            borderWidth: 0.7,
-                            borderColor: 'black',
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            paddingHorizontal: 10,
-                            marginBottom: 20,
-                          }}>
-                          <Text style={{color: '#989898'}}>
-                            {selectedItem ? selectedItem : 'রক্তের গ্রুপ'}
-                          </Text>
-                          <Icon
-                            name={isOpened ? 'chevron-up' : 'chevron-down'}
-                            style={{fontSize: 28}}
-                          />
-                        </View>
-                      );
-                    }}
-                  />
+                render={({field: {onChange, value}}) => (
+                  <View
+                    style={{
+                      marginBottom: 20,
+                      borderWidth: 1,
+                      borderColor: '#000',
+                    }}>
+                    <RNPickerSelect
+                      placeholder={{
+                        label: 'রোগীর রক্তের গ্রুপ',
+                        value: null,
+                        color: '#9EA0A4',
+                      }}
+                      onValueChange={onChange}
+                      value={value}
+                      items={[
+                        {label: 'A+', value: 'A+'},
+                        {label: 'B+', value: 'B+'},
+                        {label: 'AB+', value: 'AB+'},
+                        {label: 'AB-', value: 'AB-'},
+                        {label: 'O-', value: 'O-'},
+                        {label: 'O+', value: 'O+'},
+                        {label: 'A-', value: 'A-'},
+                        {label: 'B-', value: 'B-'},
+                      ]}
+                      style={{
+                        inputAndroid: {
+                          color: '#000',
+                        },
+                      }}
+                    />
+                  </View>
                 )}
                 name={'blood_group'}
               />
@@ -172,7 +214,7 @@ export default function BloodRequestForum({
               <Controller
                 control={control}
                 rules={{
-                  required: true,
+                  required: false,
                 }}
                 render={({field: {onChange, onBlur, value}}) => (
                   <TextInput
@@ -195,7 +237,7 @@ export default function BloodRequestForum({
               <Controller
                 control={control}
                 rules={{
-                  required: true,
+                  required: false,
                 }}
                 render={({field: {onChange, onBlur, value}}) => (
                   <TextInput
@@ -232,59 +274,36 @@ export default function BloodRequestForum({
                 rules={{
                   required: false,
                 }}
-                render={() => (
-                  <SelectDropdown
-                    data={zillas.data}
-                    renderItem={item => {
-                      return (
-                        <View>
-                          <Text style={{color: '#989898', padding: 10}}>
-                            {item.bn_name}
-                          </Text>
-                        </View>
-                      );
-                    }}
-                    renderButton={(selectedItem, isOpened) => {
-                      return (
-                        <View
-                          style={{
-                            width: '100%',
-                            height: 45,
-                            backgroundColor: '#ffffff',
-                            alignItems: 'center',
-                            borderWidth: 0.7,
-                            borderColor: 'black',
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            paddingHorizontal: 10,
-                            marginBottom: 20,
-                          }}>
-                          <Text style={{color: '#989898'}}>
-                            {selectedZila.bn_name
-                              ? selectedZila.bn_name
-                              : 'সকল জেলা'}
-                          </Text>
-                          <Icon
-                            name={isOpened ? 'chevron-up' : 'chevron-down'}
-                            style={{fontSize: 28}}
-                          />
-                        </View>
-                      );
-                    }}
-                    onSelect={selectedItem => {
-                      setSelectedZila({
-                        bn_name: selectedItem.bn_name,
-                        name: selectedItem.name,
-                      });
-                    }}
-                  />
+                render={({field: {onChange, value}}) => (
+                  <View
+                    style={{
+                      marginBottom: 20,
+                      borderWidth: 1,
+                      borderColor: '#000',
+                    }}>
+                    <RNPickerSelect
+                      onValueChange={onChange}
+                      value={value}
+                      items={newZillas}
+                      placeholder={{
+                        label: 'জেলা নির্বাচন',
+                        value: null,
+                        color: '#9EA0A4',
+                      }}
+                      style={{
+                        inputAndroid: {
+                          color: '#000',
+                        },
+                      }}
+                    />
+                  </View>
                 )}
-                name={'blood_group'}
+                name={'district'}
               />
               <Controller
                 control={control}
                 rules={{
-                  required: true,
+                  required: false,
                 }}
                 render={({field: {onChange, onBlur, value}}) => (
                   <TextInput
@@ -309,7 +328,7 @@ export default function BloodRequestForum({
                   key={index}
                   control={control}
                   rules={{
-                    required: true,
+                    required: false,
                   }}
                   render={({field: {onChange, onBlur, value}}) => (
                     <View
@@ -356,7 +375,7 @@ export default function BloodRequestForum({
               <Controller
                 control={control}
                 rules={{
-                  required: true,
+                  required: false,
                 }}
                 render={({field: {onChange, onBlur, value}}) => (
                   <TextInput
@@ -404,45 +423,33 @@ export default function BloodRequestForum({
                 rules={{
                   required: false,
                 }}
-                render={({field: {onChange}}) => (
-                  <SelectDropdown
-                    onSelect={onChange}
-                    data={['Male', 'Female', 'Other']}
-                    renderItem={(item: any) => {
-                      return (
-                        <View>
-                          <Text style={{color: '#989898', padding: 10}}>
-                            {item}
-                          </Text>
-                        </View>
-                      );
-                    }}
-                    renderButton={(selectedItem, isOpened) => {
-                      return (
-                        <View
-                          style={{
-                            width: '100%',
-                            height: 45,
-                            backgroundColor: '#ffffff',
-                            alignItems: 'center',
-                            borderWidth: 0.7,
-                            borderColor: 'black',
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            paddingHorizontal: 10,
-                            marginBottom: 20,
-                          }}>
-                          <Text style={{color: '#989898'}}>
-                            {selectedItem ? selectedItem : 'রোগীর জেন্ডার'}
-                          </Text>
-                          <Icon
-                            name={isOpened ? 'chevron-up' : 'chevron-down'}
-                            style={{fontSize: 28}}
-                          />
-                        </View>
-                      );
-                    }}
-                  />
+                render={({field: {onChange, value}}) => (
+                  <View
+                    style={{
+                      marginBottom: 20,
+                      borderWidth: 1,
+                      borderColor: '#000',
+                    }}>
+                    <RNPickerSelect
+                      onValueChange={onChange}
+                      value={value}
+                      items={[
+                        {label: 'পুরুষ', value: 'male'},
+                        {label: 'মহিলা', value: 'female'},
+                        {label: 'অন্যান্য', value: 'other'},
+                      ]}
+                      placeholder={{
+                        label: 'রোগীর জেন্ডার',
+                        value: null,
+                        color: '#9EA0A4',
+                      }}
+                      style={{
+                        inputAndroid: {
+                          color: '#000',
+                        },
+                      }}
+                    />
+                  </View>
                 )}
                 name={'gender'}
               />
@@ -475,20 +482,36 @@ export default function BloodRequestForum({
                   required: false,
                 }}
                 render={({field: {onChange, onBlur, value}}) => (
-                  <TextInput
-                    placeholder={'রক্ত প্রয়োজনের সময় সিলেক্ট করুন'}
-                    onBlur={onBlur}
-                    onChangeText={onChange}
-                    value={value}
-                    placeholderTextColor={'#989898'}
-                    style={{
-                      color: '#000',
-                      borderColor: '#000',
-                      borderWidth: 1,
-                      padding: 10,
-                      marginBottom: 20,
-                    }}
-                  />
+                  <>
+                    <TextInput
+                      showSoftInputOnFocus={false}
+                      placeholder={'রক্ত প্রয়োজনের সময় সিলেক্ট করুন?'}
+                      //   onBlur={onBlur}
+                      //   onChangeText={onChange}
+                      value={moment(date).format('lll')}
+                      onPress={() => setOpen(true)}
+                      placeholderTextColor={'#989898'}
+                      style={{
+                        color: '#000',
+                        borderColor: '#000',
+                        borderWidth: 1,
+                        padding: 10,
+                        marginBottom: 20,
+                      }}
+                    />
+                    <DatePicker
+                      modal
+                      open={open}
+                      date={date}
+                      onConfirm={newDate => {
+                        setOpen(false);
+                        setDate(newDate);
+                      }}
+                      onCancel={() => {
+                        setOpen(false);
+                      }}
+                    />
+                  </>
                 )}
                 name={'delivery_time'}
               />
@@ -498,7 +521,7 @@ export default function BloodRequestForum({
                 rules={{
                   required: false,
                 }}
-                render={({field: {onChange, onBlur, value}}) => (
+                render={({field: {onChange, value}}) => (
                   <CheckBox
                     style={{flex: 1, marginBottom: 20}}
                     onClick={() => {
@@ -541,7 +564,6 @@ export default function BloodRequestForum({
               onPress={handleSubmit(onSubmit)}
               style={{
                 backgroundColor: '#BF0000',
-                // backgroundColor: '#BF0000',
                 padding: 10,
                 marginRight: 10,
               }}>

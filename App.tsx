@@ -10,14 +10,32 @@ import React from 'react';
 import {StatusBar} from 'react-native';
 import BloodBankDetails from './screens/BloodBankDetails';
 import BloodBankList from './screens/BloodBankList';
-import BloodRequestForum from './screens/BloodRequestForum2';
+import BloodRequestForum from './screens/BloodRequestForum';
 import Home from './screens/Home';
 
 import {NavigationContainer} from '@react-navigation/native';
+import Toast, {BaseToast} from 'react-native-toast-message';
 import Header from './components/Header';
 import BloodSeekerDetails from './screens/BloodSeekerDetails';
 
 const Stack = createStackNavigator();
+
+const toastConfig = {
+  /*
+    Overwrite 'success' type,
+    by modifying the existing `BaseToast` component
+  */
+  success: (props: any) => (
+    <BaseToast {...props} style={{borderLeftColor: 'green'}} />
+  ),
+  /*
+    Overwrite 'error' type,
+    by modifying the existing `ErrorToast` component
+  */
+  error: (props: any) => (
+    <BaseToast {...props} style={{borderLeftColor: '#BF0000'}} />
+  ),
+};
 
 function App(): React.JSX.Element {
   return (
@@ -37,6 +55,7 @@ function App(): React.JSX.Element {
           component={BloodSeekerDetails}
         />
       </Stack.Navigator>
+      <Toast config={toastConfig} />
     </NavigationContainer>
   );
 }

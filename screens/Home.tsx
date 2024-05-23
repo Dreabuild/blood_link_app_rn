@@ -3,6 +3,7 @@ import {NavigationProp} from '@react-navigation/native';
 import React, {useEffect} from 'react';
 import {Text, View} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
+import LoaderKit from 'react-native-loader-kit';
 import SelectDropdown from 'react-native-select-dropdown';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import BloodSeekCard from '../components/BloodSeekCard';
@@ -20,8 +21,10 @@ export default function Home({navigation}: {navigation: NavigationProp<any>}) {
     name: '',
   });
   const [bloodData, setBloodData] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
 
   useEffect(() => {
+    setLoading(true);
     const onSelectedBloodGroup = async () => {
       const url = `${API_URL}/request/${
         selectedBloodGroup ? `?bloodGroup=${selectedBloodGroup}` : ''
@@ -35,6 +38,7 @@ export default function Home({navigation}: {navigation: NavigationProp<any>}) {
       const res = await fetch(url);
       const {data} = await res.json();
       setBloodData(data);
+      setLoading(false);
     };
     onSelectedBloodGroup();
   }, [selectedBloodGroup, selectedZila]);
@@ -146,36 +150,46 @@ export default function Home({navigation}: {navigation: NavigationProp<any>}) {
           </View>
 
           {/* REQUEST COUNT */}
-          <View
-            style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-              paddingHorizontal: 20,
-              paddingBottom: 40,
-            }}>
-            <Text style={{color: '#000', fontWeight: '600'}}>
-              <Text style={{color: '#AE0000'}}>
-                {bloodData?.length ? bloodData?.length : 0}
-              </Text>{' '}
-              টি আবেদন পাওয়া গেছে "
-              {selectedZila.bn_name ? selectedZila.bn_name : 'সকল'}" জেলায়
-            </Text>
-          </View>
+          {loading ? (
+            <LoaderKit
+              style={{width: 50, height: 50, margin: 'auto'}}
+              name={'BallPulseSync'} // Optional: see list of animations below
+              color={'#BF0000'} // Optional: color can be: 'red', 'green',... or '#ddd', '#ffffff',...
+            />
+          ) : (
+            <>
+              <View
+                style={{
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  paddingHorizontal: 20,
+                  paddingBottom: 40,
+                }}>
+                <Text style={{color: '#000', fontWeight: '600'}}>
+                  <Text style={{color: '#AE0000'}}>
+                    {bloodData?.length ? bloodData?.length : 0}
+                  </Text>{' '}
+                  টি আবেদন পাওয়া গেছে "
+                  {selectedZila.bn_name ? selectedZila.bn_name : 'সকল'}" জেলায়
+                </Text>
+              </View>
 
-          {/* REQUEST LIST */}
-          <View style={{paddingHorizontal: 20}}>
-            {/* REQUEST CARD */}
-            {bloodData?.length > 0 &&
-              bloodData.map((seeker: IBloodSeeker) => {
-                return (
-                  <BloodSeekCard
-                    key={seeker.id}
-                    seeker={seeker}
-                    navigation={navigation}
-                  />
-                );
-              })}
-          </View>
+              {/* REQUEST LIST */}
+              <View style={{paddingHorizontal: 20}}>
+                {/* REQUEST CARD */}
+                {bloodData?.length > 0 &&
+                  bloodData.map((seeker: IBloodSeeker) => {
+                    return (
+                      <BloodSeekCard
+                        key={seeker.id}
+                        seeker={seeker}
+                        navigation={navigation}
+                      />
+                    );
+                  })}
+              </View>
+            </>
+          )}
         </ScrollView>
         <Footer navigation={navigation} />
       </View>
