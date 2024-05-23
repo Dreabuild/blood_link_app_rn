@@ -14,6 +14,9 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Footer from '../components/Footer';
 import {IBloodSeeker} from '../types/BloodSeeker';
 import CheckBox from 'react-native-check-box';
+import {API_URL} from '../config';
+import RNPickerSelect from 'react-native-picker-select';
+// import DatePicker from 'react-native-date-picker';
 
 const blood_groups = ['A+', 'B+', 'AB+', 'AB-', 'O-', 'O+', 'A-', 'B-'];
 
@@ -45,8 +48,34 @@ export default function BloodRequestForum({
     },
   });
   const [bloodGroup, setBloodGroup] = useState('');
-  const onSubmit: SubmitHandler<IBloodSeeker> = (data: IBloodSeeker) =>
-    console.log(data);
+  const onSubmit: SubmitHandler<IBloodSeeker> = (data: IBloodSeeker) => {
+    const url = `${API_URL}//request/create`;
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        blood_group: data.blood_group,
+        hemoglobin_point: Number(data.hemoglobin_point),
+        amount_of_blood: Number(data.amount_of_blood),
+        patient_problem: data.patient_problem,
+        district: data.district,
+        hospital_name: data.hospital_name,
+        mobile_number: data.mobile_number,
+        whatsapp_number: data.whatsapp_number,
+        facebook_account_url: data.facebook_account_url,
+        gender: data.gender,
+        delivery_time: data.delivery_time,
+        urgent: data.urgent,
+        description: data.description,
+      }),
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+      });
+  };
 
   const {fields, append, remove} = useFieldArray({
     control,
@@ -205,7 +234,7 @@ export default function BloodRequestForum({
                     }}
                   />
                 )}
-                name={'hemoglobin_point'}
+                name={'patient_problem'}
               />
             </View>
             <View style={{marginTop: 20}}>
@@ -343,20 +372,22 @@ export default function BloodRequestForum({
                   required: false,
                 }}
                 render={({field: {onChange, onBlur, value}}) => (
-                  <TextInput
-                    placeholder={'রোগীর জেন্ডার'}
-                    onBlur={onBlur}
-                    onChangeText={onChange}
-                    value={value}
-                    placeholderTextColor={'#989898'}
+                  <View
                     style={{
-                      color: '#000',
-                      borderColor: '#000',
-                      borderWidth: 1,
-                      padding: 10,
                       marginBottom: 20,
-                    }}
-                  />
+                      borderWidth: 1,
+                      borderColor: '#000',
+                    }}>
+                    <RNPickerSelect
+                      onValueChange={onChange}
+                      value={value}
+                      items={[
+                        {label: 'পুরুষ', value: 'male'},
+                        {label: 'মহিলা', value: 'female'},
+                        {label: 'অন্যান্য', value: 'other'},
+                      ]}
+                    />
+                  </View>
                 )}
                 name={'gender'}
               />
