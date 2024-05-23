@@ -10,7 +10,7 @@ import React from 'react';
 import {StatusBar} from 'react-native';
 import BloodBankDetails from './screens/BloodBankDetails';
 import BloodBankList from './screens/BloodBankList';
-import BloodRequestForum from './screens/BloodRequestForum';
+import BloodRequestForum from './screens/BloodRequestForum2';
 import Home from './screens/Home';
 
 import {NavigationContainer} from '@react-navigation/native';

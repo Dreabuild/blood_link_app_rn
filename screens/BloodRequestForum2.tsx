@@ -1,33 +1,23 @@
 /* eslint-disable prettier/prettier */
 import {NavigationProp} from '@react-navigation/native';
 import React, {useState} from 'react';
-import {Controller, useFieldArray, useForm} from 'react-hook-form';
+import {
+  Controller,
+  SubmitHandler,
+  useFieldArray,
+  useForm,
+} from 'react-hook-form';
 import {ScrollView, Text, TextInput, View} from 'react-native';
 import CheckBox from 'react-native-check-box';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import RNPickerSelect from 'react-native-picker-select';
 import SelectDropdown from 'react-native-select-dropdown';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Footer from '../components/Footer';
 import {API_URL} from '../config';
-import zillas from '../data/district.json';
+import {IBloodSeeker} from '../types/BloodSeeker';
 
 const blood_groups = ['A+', 'B+', 'AB+', 'AB-', 'O-', 'O+', 'A-', 'B-'];
-const defaultValues = {
-  blood_group: '',
-  hemoglobin_point: '',
-  amount_of_blood: '',
-  patient_problem: '',
-  district: '',
-  hospital_name: '',
-  mobile_numbers: [{number: ''}],
-  whatsapp_number: '',
-  facebook_account_url: '',
-  gender: '',
-  relationship: '',
-  urgent: false,
-  description: '',
-  delivery_time: '',
-};
 
 export default function BloodRequestForum({
   navigation,
@@ -37,32 +27,60 @@ export default function BloodRequestForum({
   const {
     control,
     handleSubmit,
-    formState: {},
+    // formState: {errors},
   } = useForm({
-    defaultValues,
+    defaultValues: {
+      blood_group: '',
+      hemoglobin_point: '',
+      amount_of_blood: '',
+      patient_problem: '',
+      district: '',
+      hospital_name: '',
+      mobile_numbers: [{number: ''}],
+      whatsapp_number: '',
+      facebook_account_url: '',
+      gender: '',
+      relationship: '',
+      urgent: false,
+      description: '',
+      delivery_time: '',
+    },
   });
-
-  const [selectedZila, setSelectedZila] = useState({
-    bn_name: '',
-    name: '',
-  });
-
-  const onSubmit = async (data: any) => {
-    const res = await fetch(`${API_URL}/request`, {
+  const [bloodGroup, setBloodGroup] = useState('');
+  const onSubmit: SubmitHandler<IBloodSeeker> = (data: IBloodSeeker) => {
+    const url = `${API_URL}//request/create`;
+    fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({...data, selectedZila}),
-    });
-    const newReq = await res.json();
-    console.log(newReq);
+      body: JSON.stringify({
+        blood_group: data.blood_group,
+        hemoglobin_point: Number(data.hemoglobin_point),
+        amount_of_blood: Number(data.amount_of_blood),
+        patient_problem: data.patient_problem,
+        district: data.district,
+        hospital_name: data.hospital_name,
+        mobile_number: data.mobile_number,
+        whatsapp_number: data.whatsapp_number,
+        facebook_account_url: data.facebook_account_url,
+        gender: data.gender,
+        delivery_time: data.delivery_time,
+        urgent: data.urgent,
+        description: data.description,
+      }),
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+      });
   };
 
-  const {fields, append} = useFieldArray({
+  const {fields, append, remove} = useFieldArray({
     control,
     name: 'mobile_numbers',
   });
+  console.log(fields);
   return (
     <React.Fragment>
       <View
@@ -101,11 +119,10 @@ export default function BloodRequestForum({
               <Controller
                 control={control}
                 rules={{
-                  required: true,
+                  required: false,
                 }}
-                render={({field: {onChange}}) => (
+                render={() => (
                   <SelectDropdown
-                    onSelect={onChange}
                     data={blood_groups}
                     renderItem={(item: any) => {
                       return (
@@ -141,6 +158,9 @@ export default function BloodRequestForum({
                         </View>
                       );
                     }}
+                    onSelect={selectedItem => {
+                      setBloodGroup(selectedItem);
+                    }}
                   />
                 )}
                 name={'blood_group'}
@@ -172,7 +192,7 @@ export default function BloodRequestForum({
               <Controller
                 control={control}
                 rules={{
-                  required: true,
+                  required: false,
                 }}
                 render={({field: {onChange, onBlur, value}}) => (
                   <TextInput
@@ -195,7 +215,7 @@ export default function BloodRequestForum({
               <Controller
                 control={control}
                 rules={{
-                  required: true,
+                  required: false,
                 }}
                 render={({field: {onChange, onBlur, value}}) => (
                   <TextInput
@@ -227,64 +247,11 @@ export default function BloodRequestForum({
                 }}>
                 অন্যান্য তথ্য
               </Text>
+
               <Controller
                 control={control}
                 rules={{
                   required: false,
-                }}
-                render={() => (
-                  <SelectDropdown
-                    data={zillas.data}
-                    renderItem={item => {
-                      return (
-                        <View>
-                          <Text style={{color: '#989898', padding: 10}}>
-                            {item.bn_name}
-                          </Text>
-                        </View>
-                      );
-                    }}
-                    renderButton={(selectedItem, isOpened) => {
-                      return (
-                        <View
-                          style={{
-                            width: '100%',
-                            height: 45,
-                            backgroundColor: '#ffffff',
-                            alignItems: 'center',
-                            borderWidth: 0.7,
-                            borderColor: 'black',
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            paddingHorizontal: 10,
-                            marginBottom: 20,
-                          }}>
-                          <Text style={{color: '#989898'}}>
-                            {selectedZila.bn_name
-                              ? selectedZila.bn_name
-                              : 'সকল জেলা'}
-                          </Text>
-                          <Icon
-                            name={isOpened ? 'chevron-up' : 'chevron-down'}
-                            style={{fontSize: 28}}
-                          />
-                        </View>
-                      );
-                    }}
-                    onSelect={selectedItem => {
-                      setSelectedZila({
-                        bn_name: selectedItem.bn_name,
-                        name: selectedItem.name,
-                      });
-                    }}
-                  />
-                )}
-                name={'blood_group'}
-              />
-              <Controller
-                control={control}
-                rules={{
-                  required: true,
                 }}
                 render={({field: {onChange, onBlur, value}}) => (
                   <TextInput
@@ -306,10 +273,10 @@ export default function BloodRequestForum({
               />
               {fields.map((field, index) => (
                 <Controller
-                  key={index}
+                  id={field.id}
                   control={control}
                   rules={{
-                    required: true,
+                    required: false,
                   }}
                   render={({field: {onChange, onBlur, value}}) => (
                     <View
@@ -325,8 +292,7 @@ export default function BloodRequestForum({
                         placeholder={'মোবাইল নাম্বার'}
                         onBlur={onBlur}
                         onChangeText={onChange}
-                        value={value[0].number}
-                        // value={value}
+                        value={value}
                         placeholderTextColor={'#989898'}
                         style={{
                           color: '#000',
@@ -345,18 +311,18 @@ export default function BloodRequestForum({
                             flexDirection: 'row',
                           }}>
                           <Icon name="plus" style={{color: '#fff'}} size={20} />
-                          <Text style={{color: '#fff'}}>আরো যোগ করুন</Text>
+                          <Text style={{color: '#fff'}}>অারো যোগ করুন</Text>
                         </TouchableOpacity>
                       )}
                     </View>
                   )}
-                  name={'mobile_numbers'}
+                  name={`mobile_numbers[${index}].number`}
                 />
               ))}
               <Controller
                 control={control}
                 rules={{
-                  required: true,
+                  required: false,
                 }}
                 render={({field: {onChange, onBlur, value}}) => (
                   <TextInput
@@ -404,45 +370,23 @@ export default function BloodRequestForum({
                 rules={{
                   required: false,
                 }}
-                render={({field: {onChange}}) => (
-                  <SelectDropdown
-                    onSelect={onChange}
-                    data={['Male', 'Female', 'Other']}
-                    renderItem={(item: any) => {
-                      return (
-                        <View>
-                          <Text style={{color: '#989898', padding: 10}}>
-                            {item}
-                          </Text>
-                        </View>
-                      );
-                    }}
-                    renderButton={(selectedItem, isOpened) => {
-                      return (
-                        <View
-                          style={{
-                            width: '100%',
-                            height: 45,
-                            backgroundColor: '#ffffff',
-                            alignItems: 'center',
-                            borderWidth: 0.7,
-                            borderColor: 'black',
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            paddingHorizontal: 10,
-                            marginBottom: 20,
-                          }}>
-                          <Text style={{color: '#989898'}}>
-                            {selectedItem ? selectedItem : 'রোগীর জেন্ডার'}
-                          </Text>
-                          <Icon
-                            name={isOpened ? 'chevron-up' : 'chevron-down'}
-                            style={{fontSize: 28}}
-                          />
-                        </View>
-                      );
-                    }}
-                  />
+                render={({field: {onChange, onBlur, value}}) => (
+                  <View
+                    style={{
+                      marginBottom: 20,
+                      borderWidth: 1,
+                      borderColor: '#000',
+                    }}>
+                    <RNPickerSelect
+                      onValueChange={onChange}
+                      value={value}
+                      items={[
+                        {label: 'পুরুষ', value: 'male'},
+                        {label: 'মহিলা', value: 'female'},
+                        {label: 'অন্যান্য', value: 'other'},
+                      ]}
+                    />
+                  </View>
                 )}
                 name={'gender'}
               />
@@ -541,7 +485,6 @@ export default function BloodRequestForum({
               onPress={handleSubmit(onSubmit)}
               style={{
                 backgroundColor: '#BF0000',
-                // backgroundColor: '#BF0000',
                 padding: 10,
                 marginRight: 10,
               }}>

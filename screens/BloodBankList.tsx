@@ -41,20 +41,6 @@ export default function BloodBankList({
     call(args).catch(console.error);
   };
 
-  const triggerMsg = () => {
-    const url = 'sms:+123456789';
-
-    Linking.canOpenURL(url)
-      .then(supported => {
-        if (!supported) {
-          console.log('Unsupported url: ' + url);
-        } else {
-          return Linking.openURL(url);
-        }
-      })
-      .catch(err => console.error('An error occurred', err));
-  };
-
   return (
     <React.Fragment>
       <View
@@ -111,7 +97,7 @@ export default function BloodBankList({
                       </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                      onPress={triggerMsg}
+                      onPress={() => Linking.openURL(`sms:${contact[0]}`)}
                       style={{
                         backgroundColor: '#BF0000',
                         flexDirection: 'row',

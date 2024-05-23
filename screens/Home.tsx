@@ -7,6 +7,7 @@ import SelectDropdown from 'react-native-select-dropdown';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import BloodSeekCard from '../components/BloodSeekCard';
 import Footer from '../components/Footer';
+import {API_URL} from '../config';
 import zillas from '../data/district.json';
 import {IBloodSeeker} from '../types/BloodSeeker';
 
@@ -22,7 +23,7 @@ export default function Home({navigation}: {navigation: NavigationProp<any>}) {
 
   useEffect(() => {
     const onSelectedBloodGroup = async () => {
-      const url = `https://blood-link-backend-iota.vercel.app/api/v1/request/${
+      const url = `${API_URL}/request/${
         selectedBloodGroup ? `?bloodGroup=${selectedBloodGroup}` : ''
       }${
         selectedZila.name
