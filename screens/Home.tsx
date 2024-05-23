@@ -9,6 +9,7 @@ import BloodSeekCard from '../components/BloodSeekCard';
 import Footer from '../components/Footer';
 import zillas from '../data/district.json';
 import {IBloodSeeker} from '../types/BloodSeeker';
+import {API_URL} from '../config';
 
 const bloodGroups = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
 
@@ -22,7 +23,7 @@ export default function Home({navigation}: {navigation: NavigationProp<any>}) {
 
   useEffect(() => {
     const onSelectedBloodGroup = async () => {
-      const url = `https://blood-link-backend-iota.vercel.app/api/v1/request/${
+      const url = `${API_URL}/request/${
         selectedBloodGroup ? `?bloodGroup=${selectedBloodGroup}` : ''
       }${
         selectedZila.name
