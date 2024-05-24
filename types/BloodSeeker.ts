@@ -14,4 +14,5 @@ export interface IBloodSeeker {
   delivery_time: string;
   urgent: boolean;
   description: string;
+  views_count: number;
 }

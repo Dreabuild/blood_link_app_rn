@@ -38,7 +38,7 @@ export default function Footer({
           alignItems: 'center',
         }}>
         <Text style={{color: '#AE0000', fontWeight: 600}}>
-          {route.name === 'BloodBankList'
+          {route.name === 'BloodBankList' || route.name === 'BloodSeekerDetails'
             ? 'হোম'
             : route.name === 'BloodBankDetails'
             ? 'হোম'
