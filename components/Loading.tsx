@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import LoadingDots from 'react-native-loading-dots';
 
 export default function LoadingScreen() {
@@ -8,6 +8,7 @@ export default function LoadingScreen() {
     <View style={styles.loadingScreen}>
       <View style={styles.dotsWrapper}>
         <LoadingDots colors={['#AE0000', '#AE0000', '#AE0000', '#AE0000']} />
+        {/* <LoaderKit name={'BallPulseSync'} color={'#AE0000'} /> */}
       </View>
     </View>
   );

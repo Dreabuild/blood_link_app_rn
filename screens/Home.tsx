@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable prettier/prettier */
+
 import {NavigationProp} from '@react-navigation/native';
 import React, {useEffect} from 'react';
 import {Text, View} from 'react-native';
@@ -8,10 +8,10 @@ import SelectDropdown from 'react-native-select-dropdown';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import BloodSeekCard from '../components/BloodSeekCard';
 import Footer from '../components/Footer';
+import LoadingScreen from '../components/Loading';
+import {API_URL} from '../config';
 import zillas from '../data/district.json';
 import {IBloodSeeker} from '../types/BloodSeeker';
-import {API_URL} from '../config';
-import LoadingScreen from '../components/Loading';
 
 const bloodGroups = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
 
@@ -36,13 +36,10 @@ export default function Home({navigation}: {navigation: NavigationProp<any>}) {
             : `?district=${selectedZila.name}`
           : ''
       }`;
-      console.log(url);
       const res = await fetch(url);
       const {data} = await res.json();
-      console.log(data);
       setBloodData(data);
     } catch (err: any) {
-      console.log(err.message);
     } finally {
       setLoading(false);
     }
@@ -52,7 +49,6 @@ export default function Home({navigation}: {navigation: NavigationProp<any>}) {
   }, [selectedBloodGroup, selectedZila]);
 
   useEffect(() => {
-    console.log('run');
     onSelectedBloodGroup();
   }, []);
 
@@ -119,7 +115,6 @@ export default function Home({navigation}: {navigation: NavigationProp<any>}) {
                     );
                   }}
                   onSelect={selectedItem => {
-                    // console.log('selectedItem', selectedItem);
                     setSelectedBloodGroup(selectedItem);
                   }}
                 />

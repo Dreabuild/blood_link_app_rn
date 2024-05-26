@@ -1,35 +1,34 @@
 /* eslint-disable prettier/prettier */
 import {NavigationProp} from '@react-navigation/native';
+import moment from 'moment';
 import React, {useState} from 'react';
-import {
-  Controller,
-  SubmitHandler,
-  useForm,
-  useFieldArray,
-} from 'react-hook-form';
+import {Controller, useFieldArray, useForm} from 'react-hook-form';
 import {ScrollView, Text, TextInput, View} from 'react-native';
+import CheckBox from 'react-native-check-box';
+import DatePicker from 'react-native-date-picker';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import SelectDropdown from 'react-native-select-dropdown';
+import RNPickerSelect from 'react-native-picker-select';
+import Toast from 'react-native-toast-message';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Footer from '../components/Footer';
-import {IBloodSeeker} from '../types/BloodSeeker';
-import CheckBox from 'react-native-check-box';
 import {API_URL} from '../config';
-import RNPickerSelect from 'react-native-picker-select';
-// import DatePicker from 'react-native-date-picker';
-
-const blood_groups = ['A+', 'B+', 'AB+', 'AB-', 'O-', 'O+', 'A-', 'B-'];
+import zillas from '../data/district.json';
+import {bloodSeekerSchema} from '../types/BloodSeeker';
 
 export default function BloodRequestForum({
   navigation,
 }: {
   navigation: NavigationProp<any>;
 }) {
+  const [date, setDate] = useState(new Date());
+  const [open, setOpen] = useState(false);
+
   const {
     control,
     handleSubmit,
-    // formState: {errors},
+    formState: {errors},
   } = useForm({
+    mode: 'onChange',
     defaultValues: {
       blood_group: '',
       hemoglobin_point: '',
@@ -47,41 +46,75 @@ export default function BloodRequestForum({
       delivery_time: '',
     },
   });
-  const [bloodGroup, setBloodGroup] = useState('');
-  const onSubmit: SubmitHandler<IBloodSeeker> = (data: IBloodSeeker) => {
-    const url = `${API_URL}//request/create`;
-    fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
+
+  const onSubmit = async (data: any) => {
+    try {
+      const mobile_numbers = data.mobile_numbers.map(
+        (number: any) => number.number,
+      );
+
+      const modifiedData = {
         blood_group: data.blood_group,
         hemoglobin_point: Number(data.hemoglobin_point),
         amount_of_blood: Number(data.amount_of_blood),
         patient_problem: data.patient_problem,
         district: data.district,
         hospital_name: data.hospital_name,
-        mobile_number: data.mobile_number,
+        relationship: data.relationship,
+        mobile_number: mobile_numbers,
         whatsapp_number: data.whatsapp_number,
         facebook_account_url: data.facebook_account_url,
         gender: data.gender,
-        delivery_time: data.delivery_time,
+        delivery_time: date,
         urgent: data.urgent,
         description: data.description,
-      }),
-    })
-      .then(res => res.json())
-      .then(data => {
-        console.log(data);
+      };
+      const safeData = bloodSeekerSchema.safeParse(modifiedData);
+      if (safeData.error) {
+        Toast.show({
+          type: 'error',
+          text1: 'Blood Request Failed',
+          text2: 'Please fill up the fields in correct format',
+        });
+        return;
+      }
+
+      const url = `${API_URL}/request/create`;
+      await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...safeData.data,
+        }),
       });
+      Toast.show({
+        type: 'success',
+        text1: 'Blood Request Successful',
+        text2: 'New Blood Request Created Successfully!',
+      });
+      navigation.navigate('Home');
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Blood Request Failed',
+        text2: 'Something went wrong. Try again',
+      });
+    }
   };
 
   const {fields, append, remove} = useFieldArray({
     control,
     name: 'mobile_numbers',
   });
-  console.log(fields);
+
+  const firstMoNo = fields[0];
+
+  const newZillas = zillas.data.map(zilla => {
+    return {label: zilla.bn_name, value: zilla.name};
+  });
+
   return (
     <React.Fragment>
       <View
@@ -120,49 +153,40 @@ export default function BloodRequestForum({
               <Controller
                 control={control}
                 rules={{
-                  required: false,
+                  required: true,
                 }}
-                render={() => (
-                  <SelectDropdown
-                    data={blood_groups}
-                    renderItem={(item: any) => {
-                      return (
-                        <View>
-                          <Text style={{color: '#989898', padding: 10}}>
-                            {item}
-                          </Text>
-                        </View>
-                      );
-                    }}
-                    renderButton={(selectedItem, isOpened) => {
-                      return (
-                        <View
-                          style={{
-                            width: '100%',
-                            height: 45,
-                            backgroundColor: '#ffffff',
-                            alignItems: 'center',
-                            borderWidth: 0.7,
-                            borderColor: 'black',
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            paddingHorizontal: 10,
-                            marginBottom: 20,
-                          }}>
-                          <Text style={{color: '#989898'}}>
-                            {selectedItem ? selectedItem : 'রক্তের গ্রুপ'}
-                          </Text>
-                          <Icon
-                            name={isOpened ? 'chevron-up' : 'chevron-down'}
-                            style={{fontSize: 28}}
-                          />
-                        </View>
-                      );
-                    }}
-                    onSelect={selectedItem => {
-                      setBloodGroup(selectedItem);
-                    }}
-                  />
+                render={({field: {onChange, value}}) => (
+                  <View
+                    style={{
+                      marginBottom: 20,
+                      borderWidth: 1,
+                      borderColor: '#000',
+                    }}>
+                    <RNPickerSelect
+                      placeholder={{
+                        label: 'রোগীর রক্তের গ্রুপ',
+                        value: null,
+                        color: '#989898',
+                      }}
+                      onValueChange={onChange}
+                      value={value}
+                      items={[
+                        {label: 'A+', value: 'A+'},
+                        {label: 'B+', value: 'B+'},
+                        {label: 'AB+', value: 'AB+'},
+                        {label: 'AB-', value: 'AB-'},
+                        {label: 'O-', value: 'O-'},
+                        {label: 'O+', value: 'O+'},
+                        {label: 'A-', value: 'A-'},
+                        {label: 'B-', value: 'B-'},
+                      ]}
+                      style={{
+                        inputAndroid: {
+                          color: '#000',
+                        },
+                      }}
+                    />
+                  </View>
                 )}
                 name={'blood_group'}
               />
@@ -193,7 +217,7 @@ export default function BloodRequestForum({
               <Controller
                 control={control}
                 rules={{
-                  required: false,
+                  required: true,
                 }}
                 render={({field: {onChange, onBlur, value}}) => (
                   <TextInput
@@ -216,7 +240,7 @@ export default function BloodRequestForum({
               <Controller
                 control={control}
                 rules={{
-                  required: false,
+                  required: true,
                 }}
                 render={({field: {onChange, onBlur, value}}) => (
                   <TextInput
@@ -248,11 +272,41 @@ export default function BloodRequestForum({
                 }}>
                 অন্যান্য তথ্য
               </Text>
-
               <Controller
                 control={control}
                 rules={{
                   required: false,
+                }}
+                render={({field: {onChange, value}}) => (
+                  <View
+                    style={{
+                      marginBottom: 20,
+                      borderWidth: 1,
+                      borderColor: '#000',
+                    }}>
+                    <RNPickerSelect
+                      onValueChange={onChange}
+                      value={value}
+                      items={newZillas}
+                      placeholder={{
+                        label: 'জেলা নির্বাচন',
+                        value: null,
+                        color: '#989898',
+                      }}
+                      style={{
+                        inputAndroid: {
+                          color: '#000',
+                        },
+                      }}
+                    />
+                  </View>
+                )}
+                name={'district'}
+              />
+              <Controller
+                control={control}
+                rules={{
+                  required: true,
                 }}
                 render={({field: {onChange, onBlur, value}}) => (
                   <TextInput
@@ -274,56 +328,73 @@ export default function BloodRequestForum({
               />
               {fields.map((field, index) => (
                 <Controller
-                  id={field.id}
+                  key={field.id}
                   control={control}
                   rules={{
-                    required: false,
+                    required: true,
                   }}
-                  render={({field: {onChange, onBlur, value}}) => (
-                    <View
-                      style={{
-                        borderWidth: 1,
-                        borderColor: '#000',
-                        marginBottom: 20,
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                      }}>
-                      <TextInput
-                        placeholder={'মোবাইল নাম্বার'}
-                        onBlur={onBlur}
-                        onChangeText={onChange}
-                        value={value}
-                        placeholderTextColor={'#989898'}
+                  render={({field: {onChange, onBlur, value}}) => {
+                    return (
+                      <View
                         style={{
-                          color: '#000',
+                          borderWidth: 1,
                           borderColor: '#000',
-                          borderWidth: 0,
-                          width: index === fields.length - 1 ? '50%' : '100%',
-                        }}
-                      />
-                      {index === fields.length - 1 && (
-                        <TouchableOpacity
-                          onPress={() => append({number: ''})}
+                          marginBottom: 20,
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                        }}>
+                        <TextInput
+                          placeholder={'মোবাইল নাম্বার'}
+                          onBlur={onBlur}
+                          onChangeText={onChange}
+                          value={value}
+                          placeholderTextColor={'#989898'}
                           style={{
-                            marginRight: 10,
-                            backgroundColor: '#BF0000',
-                            padding: 10,
-                            flexDirection: 'row',
-                          }}>
-                          <Icon name="plus" style={{color: '#fff'}} size={20} />
-                          <Text style={{color: '#fff'}}>অারো যোগ করুন</Text>
-                        </TouchableOpacity>
-                      )}
-                    </View>
-                  )}
-                  name={`mobile_numbers[${index}].number`}
+                            color: '#000',
+                            borderColor: '#000',
+                            borderWidth: 0,
+                            width: index === fields.length - 1 ? '50%' : '100%',
+                          }}
+                          onKeyPress={({nativeEvent}) => {
+                            if (
+                              nativeEvent.key === 'Backspace' &&
+                              value.length === 0
+                            ) {
+                              if (firstMoNo.id === field.id) {
+                                return;
+                              }
+                              remove(index);
+                            }
+                          }}
+                        />
+                        {index === fields.length - 1 && (
+                          <TouchableOpacity
+                            onPress={() => append({number: ''})}
+                            style={{
+                              marginRight: 10,
+                              backgroundColor: '#BF0000',
+                              padding: 10,
+                              flexDirection: 'row',
+                            }}>
+                            <Icon
+                              name="plus"
+                              style={{color: '#fff'}}
+                              size={20}
+                            />
+                            <Text style={{color: '#fff'}}>আরো যোগ করুন</Text>
+                          </TouchableOpacity>
+                        )}
+                      </View>
+                    );
+                  }}
+                  name={`mobile_numbers.${index}.number`}
                 />
               ))}
               <Controller
                 control={control}
                 rules={{
-                  required: false,
+                  required: true,
                 }}
                 render={({field: {onChange, onBlur, value}}) => (
                   <TextInput
@@ -371,7 +442,7 @@ export default function BloodRequestForum({
                 rules={{
                   required: false,
                 }}
-                render={({field: {onChange, onBlur, value}}) => (
+                render={({field: {onChange, value}}) => (
                   <View
                     style={{
                       marginBottom: 20,
@@ -379,6 +450,16 @@ export default function BloodRequestForum({
                       borderColor: '#000',
                     }}>
                     <RNPickerSelect
+                      style={{
+                        inputAndroid: {
+                          color: '#000000',
+                        },
+                      }}
+                      placeholder={{
+                        label: 'রোগীর জেন্ডার',
+                        value: null,
+                        color: '#989898',
+                      }}
                       onValueChange={onChange}
                       value={value}
                       items={[
@@ -417,24 +498,46 @@ export default function BloodRequestForum({
               <Controller
                 control={control}
                 rules={{
-                  required: false,
+                  required: true,
                 }}
-                render={({field: {onChange, onBlur, value}}) => (
-                  <TextInput
-                    placeholder={'রক্ত প্রয়োজনের সময় সিলেক্ট করুন'}
-                    onBlur={onBlur}
-                    onChangeText={onChange}
-                    value={value}
-                    placeholderTextColor={'#989898'}
-                    style={{
-                      color: '#000',
-                      borderColor: '#000',
-                      borderWidth: 1,
-                      padding: 10,
-                      marginBottom: 20,
-                    }}
-                  />
-                )}
+                render={({field: {onChange, value}}) => {
+                  return (
+                    <>
+                      <TextInput
+                        showSoftInputOnFocus={false}
+                        placeholder={'রক্ত প্রয়োজনের সময় সিলেক্ট করুন?'}
+                        value={
+                          (value as any) instanceof Date
+                            ? moment(value).format('lll')
+                            : ''
+                        }
+                        onPress={() => setOpen(true)}
+                        placeholderTextColor={'#989898'}
+                        style={{
+                          color: '#000',
+                          borderColor: '#000',
+                          borderWidth: 1,
+                          padding: 10,
+                          marginBottom: 20,
+                        }}
+                        caretHidden={true}
+                      />
+                      <DatePicker
+                        modal
+                        open={open}
+                        date={date}
+                        onConfirm={newDate => {
+                          setOpen(false);
+                          setDate(newDate);
+                          onChange(newDate);
+                        }}
+                        onCancel={() => {
+                          setOpen(false);
+                        }}
+                      />
+                    </>
+                  );
+                }}
                 name={'delivery_time'}
               />
               <Controller
@@ -443,7 +546,7 @@ export default function BloodRequestForum({
                 rules={{
                   required: false,
                 }}
-                render={({field: {onChange, onBlur, value}}) => (
+                render={({field: {onChange, value}}) => (
                   <CheckBox
                     style={{flex: 1, marginBottom: 20}}
                     onClick={() => {
@@ -483,7 +586,18 @@ export default function BloodRequestForum({
               />
             </View>
             <TouchableOpacity
-              onPress={handleSubmit(onSubmit)}
+              onPress={
+                // eslint-disable-next-line no-extra-boolean-cast
+                !!errors
+                  ? handleSubmit(onSubmit)
+                  : () => {
+                      Toast.show({
+                        type: 'error',
+                        text1: 'Blood Request Failed!',
+                        text2: 'Please fill up all the requried fields',
+                      });
+                    }
+              }
               style={{
                 backgroundColor: '#BF0000',
                 padding: 10,
