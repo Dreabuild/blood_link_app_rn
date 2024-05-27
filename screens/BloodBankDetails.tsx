@@ -1,7 +1,8 @@
 import {NavigationProp} from '@react-navigation/native';
 import React from 'react';
-import {ScrollView, Text, View} from 'react-native';
+import {ScrollView, View} from 'react-native';
 import Footer from '../components/Footer';
+import MyText from '../components/MyText';
 
 export default function BloodBankDetails({
   navigation,
@@ -22,7 +23,7 @@ export default function BloodBankDetails({
             flex: 1,
           }}>
           <View>
-            <Text>ব্লাড ব্যাংকের বিস্তারিত তথ্য এখানে দেখানো হবে</Text>
+            <MyText>ব্লাড ব্যাংকের বিস্তারিত তথ্য এখানে দেখানো হবে</MyText>
           </View>
         </ScrollView>
         <Footer navigation={navigation} />

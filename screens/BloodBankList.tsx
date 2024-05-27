@@ -2,18 +2,20 @@
 import {NavigationProp} from '@react-navigation/native';
 import React, {useEffect} from 'react';
 import {
-  Image,
+  ImageBackground,
   Linking,
   Platform,
   ScrollView,
-  Text,
   TouchableOpacity,
   View,
 } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import Footer from '../components/Footer';
 import LoadingScreen from '../components/Loading';
+import MyText from '../components/MyText';
 import {API_URL} from '../config';
+import {IBloodBank} from '../types/BloodBank';
 
 export default function BloodBankList({
   navigation,
@@ -88,75 +90,101 @@ export default function BloodBankList({
                   paddingVertical: 10,
                   gap: 10,
                 }}>
-                {bankList.map((item, index) => (
-                  <View
-                    key={index}
-                    style={{
-                      width: '100%',
-                      flexDirection: 'row',
-                      borderWidth: 1,
-                      borderColor: '#1e1e1e',
-                    }}>
-                    <View style={{width: '60%', padding: 20, gap: 3}}>
-                      <Text style={{color: '#BF0000'}}>#{item?.id}</Text>
-                      <Text style={{color: '#000000'}}>{item?.name}</Text>
-                      <Text style={{color: '#989898'}}>{item?.address}</Text>
-                      <View
-                        style={{marginTop: 18, flexDirection: 'row', gap: 8}}>
-                        <TouchableOpacity
-                          onPress={() => makeCall(item?.contact[0])}
+                {bankList.map((item: IBloodBank, index) => (
+                  <ImageBackground
+                    src={item.image}
+                    style={{width: '100%'}}
+                    key={item.id}>
+                    <LinearGradient
+                      colors={['#fff', '#fff', 'transparent']}
+                      start={{x: 0, y: 0}}
+                      end={{x: 1, y: 0}}>
+                      <View>
+                        <View
+                          key={index}
                           style={{
-                            backgroundColor: '#BF0000',
+                            width: '100%',
                             flexDirection: 'row',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            padding: 10,
-                            minWidth: 80,
-                            gap: 5,
+                            borderWidth: 1,
+                            borderColor: '#1e1e1e',
                           }}>
-                          <FeatherIcon name="phone" size={20} color="#FFFFFF" />
-                          <Text
-                            style={{
-                              color: '#FFFFFF',
-                            }}>
-                            কল
-                          </Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                          onPress={() => sendSMS(item?.contact[0])}
-                          style={{
-                            backgroundColor: '#BF0000',
-                            flexDirection: 'row',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            padding: 10,
-                            minWidth: 80,
-                            gap: 5,
-                          }}>
-                          <FeatherIcon
-                            name="message-circle"
-                            size={20}
-                            color="#FFFFFF"
-                          />
-                          <Text
-                            style={{
-                              color: '#FFFFFF',
-                            }}>
-                            ম্যাসেজ
-                          </Text>
-                        </TouchableOpacity>
+                          <View style={{width: '60%', padding: 20, gap: 3}}>
+                            <MyText style={{color: '#BF0000'}}>
+                              #{item?.id}
+                            </MyText>
+                            <MyText style={{color: '#000000'}}>
+                              {item?.name}
+                            </MyText>
+                            <MyText style={{color: '#989898'}}>
+                              {item?.address}
+                            </MyText>
+                            <View
+                              style={{
+                                marginTop: 18,
+                                flexDirection: 'row',
+                                gap: 8,
+                              }}>
+                              <TouchableOpacity
+                                onPress={() => makeCall(item?.contact[0])}
+                                style={{
+                                  backgroundColor: '#BF0000',
+                                  flexDirection: 'row',
+                                  justifyContent: 'center',
+                                  alignItems: 'center',
+                                  padding: 10,
+                                  minWidth: 80,
+                                  gap: 5,
+                                }}>
+                                <FeatherIcon
+                                  name="phone"
+                                  size={20}
+                                  color="#FFFFFF"
+                                />
+                                <MyText
+                                  style={{
+                                    color: '#FFFFFF',
+                                  }}>
+                                  কল
+                                </MyText>
+                              </TouchableOpacity>
+                              <TouchableOpacity
+                                onPress={() => sendSMS(item?.contact[0])}
+                                style={{
+                                  backgroundColor: '#BF0000',
+                                  flexDirection: 'row',
+                                  justifyContent: 'center',
+                                  alignItems: 'center',
+                                  padding: 10,
+                                  minWidth: 80,
+                                  gap: 5,
+                                }}>
+                                <FeatherIcon
+                                  name="message-circle"
+                                  size={20}
+                                  color="#FFFFFF"
+                                />
+                                <MyText
+                                  style={{
+                                    color: '#FFFFFF',
+                                  }}>
+                                  ম্যাসেজ
+                                </MyText>
+                              </TouchableOpacity>
+                            </View>
+                          </View>
+                          {/* <Image
+                        style={{
+                          width: '40%',
+                          height: '100%',
+                        }}
+                        source={{
+                          uri: item?.image,
+                        }}
+                      /> */}
+                        </View>
                       </View>
-                    </View>
-                    <Image
-                      style={{
-                        width: '40%',
-                        height: '100%',
-                      }}
-                      source={{
-                        uri: item?.image,
-                      }}
-                    />
-                  </View>
+                    </LinearGradient>
+                  </ImageBackground>
                 ))}
               </View>
             </ScrollView>

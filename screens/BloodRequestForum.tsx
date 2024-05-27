@@ -3,7 +3,7 @@ import {NavigationProp} from '@react-navigation/native';
 import moment from 'moment';
 import React, {useState} from 'react';
 import {Controller, useFieldArray, useForm} from 'react-hook-form';
-import {ScrollView, Text, TextInput, View} from 'react-native';
+import {ScrollView, TextInput, View} from 'react-native';
 import CheckBox from 'react-native-check-box';
 import DatePicker from 'react-native-date-picker';
 import {TouchableOpacity} from 'react-native-gesture-handler';
@@ -11,6 +11,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import Toast from 'react-native-toast-message';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Footer from '../components/Footer';
+import MyText from '../components/MyText';
 import {API_URL} from '../config';
 import zillas from '../data/district.json';
 import {bloodSeekerSchema} from '../types/BloodSeeker';
@@ -28,7 +29,6 @@ export default function BloodRequestForum({
     handleSubmit,
     formState: {errors},
   } = useForm({
-    mode: 'onChange',
     defaultValues: {
       blood_group: '',
       hemoglobin_point: '',
@@ -49,6 +49,7 @@ export default function BloodRequestForum({
 
   const onSubmit = async (data: any) => {
     try {
+      // console.log('sbumit e click');
       const mobile_numbers = data.mobile_numbers.map(
         (number: any) => number.number,
       );
@@ -70,15 +71,15 @@ export default function BloodRequestForum({
         description: data.description,
       };
       const safeData = bloodSeekerSchema.safeParse(modifiedData);
+      console.log(safeData.error);
       if (safeData.error) {
         Toast.show({
           type: 'error',
-          text1: 'Blood Request Failed',
-          text2: 'Please fill up the fields in correct format',
+          text1: 'নতুন আবেদন ব্যর্থ',
+          text2: 'দয়া করে সঠিক ভাবে ফর্ম পূরণ করুন',
         });
         return;
       }
-
       const url = `${API_URL}/request/create`;
       await fetch(url, {
         method: 'POST',
@@ -91,15 +92,15 @@ export default function BloodRequestForum({
       });
       Toast.show({
         type: 'success',
-        text1: 'Blood Request Successful',
-        text2: 'New Blood Request Created Successfully!',
+        text1: 'নতুন আবেদন সফল!',
+        text2: 'নতুন আবেদন সফল ভাবে পাঠানো হয়েছে',
       });
-      navigation.navigate('Home');
+      navigation.navigate('Home', {refresh: true});
     } catch (error) {
       Toast.show({
         type: 'error',
         text1: 'Blood Request Failed',
-        text2: 'Something went wrong. Try again',
+        text2: 'দুঃখিত, আরেকবার চেষ্টা করুন',
       });
     }
   };
@@ -112,7 +113,7 @@ export default function BloodRequestForum({
   const firstMoNo = fields[0];
 
   const newZillas = zillas.data.map(zilla => {
-    return {label: zilla.bn_name, value: zilla.name};
+    return {label: zilla.bn_name, value: zilla.bn_name};
   });
 
   return (
@@ -130,7 +131,7 @@ export default function BloodRequestForum({
             margin: 20,
           }}>
           <View>
-            <Text
+            <MyText
               style={{
                 color: '#000',
                 fontSize: 20,
@@ -138,31 +139,34 @@ export default function BloodRequestForum({
                 textAlign: 'center',
               }}>
               উপযুক্ত তথ্য দিয়ে ফরমটি পূরণ করুন
-            </Text>
+            </MyText>
             <View style={{marginTop: 20}}>
-              <Text
+              <MyText
                 style={{
                   color: '#BF0000',
                   fontSize: 16,
                   marginTop: 20,
                   marginBottom: 20,
-                  fontWeight: 800,
+                  fontFamily: 'Li Ador Noirrit Bold',
                 }}>
                 প্রাথমিক তথ্য
-              </Text>
+              </MyText>
               <Controller
                 control={control}
                 rules={{
                   required: true,
                 }}
-                render={({field: {onChange, value}}) => (
+                render={({field: {onChange, value}, fieldState: {error}}) => (
                   <View
                     style={{
                       marginBottom: 20,
                       borderWidth: 1,
-                      borderColor: '#000',
+                      borderColor: !error ? '#000' : '#BF0000',
                     }}>
                     <RNPickerSelect
+                      pickerProps={{
+                        style: {fontFamily: 'Li Ador Noirrit'},
+                      }}
                       placeholder={{
                         label: 'রোগীর রক্তের গ্রুপ',
                         value: null,
@@ -183,6 +187,7 @@ export default function BloodRequestForum({
                       style={{
                         inputAndroid: {
                           color: '#000',
+                          fontFamily: 'Li Ador Noirrit',
                         },
                       }}
                     />
@@ -195,7 +200,10 @@ export default function BloodRequestForum({
                 rules={{
                   required: false,
                 }}
-                render={({field: {onChange, onBlur, value}}) => (
+                render={({
+                  field: {onChange, onBlur, value},
+                  fieldState: {error},
+                }) => (
                   <TextInput
                     placeholder={'হিমোগ্লোবিন পয়েন্ট'}
                     onBlur={onBlur}
@@ -204,10 +212,11 @@ export default function BloodRequestForum({
                     placeholderTextColor={'#989898'}
                     style={{
                       color: '#000',
-                      borderColor: '#000',
+                      borderColor: !error ? '#000' : '#BF0000',
                       borderWidth: 1,
                       padding: 10,
                       marginBottom: 20,
+                      fontFamily: 'Li Ador Noirrit',
                     }}
                   />
                 )}
@@ -219,7 +228,10 @@ export default function BloodRequestForum({
                 rules={{
                   required: true,
                 }}
-                render={({field: {onChange, onBlur, value}}) => (
+                render={({
+                  field: {onChange, onBlur, value},
+                  fieldState: {error},
+                }) => (
                   <TextInput
                     placeholder={'রক্তের পরিমান'}
                     onBlur={onBlur}
@@ -228,10 +240,11 @@ export default function BloodRequestForum({
                     placeholderTextColor={'#989898'}
                     style={{
                       color: '#000',
-                      borderColor: '#000',
+                      borderColor: !error ? '#000' : '#BF0000',
                       borderWidth: 1,
                       padding: 10,
                       marginBottom: 20,
+                      fontFamily: 'Li Ador Noirrit',
                     }}
                   />
                 )}
@@ -242,7 +255,10 @@ export default function BloodRequestForum({
                 rules={{
                   required: true,
                 }}
-                render={({field: {onChange, onBlur, value}}) => (
+                render={({
+                  field: {onChange, onBlur, value},
+                  fieldState: {error},
+                }) => (
                   <TextInput
                     placeholder={'রোগীর সমস্যা'}
                     onBlur={onBlur}
@@ -251,10 +267,11 @@ export default function BloodRequestForum({
                     placeholderTextColor={'#989898'}
                     style={{
                       color: '#000',
-                      borderColor: '#000',
+                      borderColor: !error ? '#000' : '#BF0000',
                       borderWidth: 1,
                       padding: 10,
                       marginBottom: 20,
+                      fontFamily: 'Li Ador Noirrit',
                     }}
                   />
                 )}
@@ -262,32 +279,35 @@ export default function BloodRequestForum({
               />
             </View>
             <View style={{marginTop: 20}}>
-              <Text
+              <MyText
                 style={{
                   color: '#BF0000',
                   fontSize: 16,
                   marginTop: 20,
                   marginBottom: 20,
-                  fontWeight: 800,
+                  fontFamily: 'Li Ador Noirrit Bold',
                 }}>
                 অন্যান্য তথ্য
-              </Text>
+              </MyText>
               <Controller
                 control={control}
                 rules={{
-                  required: false,
+                  required: true,
                 }}
-                render={({field: {onChange, value}}) => (
+                render={({field: {onChange, value}, fieldState: {error}}) => (
                   <View
                     style={{
                       marginBottom: 20,
                       borderWidth: 1,
-                      borderColor: '#000',
+                      borderColor: !error ? '#000' : '#BF0000',
                     }}>
                     <RNPickerSelect
                       onValueChange={onChange}
                       value={value}
                       items={newZillas}
+                      pickerProps={{
+                        style: {fontFamily: 'Li Ador Noirrit'},
+                      }}
                       placeholder={{
                         label: 'জেলা নির্বাচন',
                         value: null,
@@ -296,6 +316,7 @@ export default function BloodRequestForum({
                       style={{
                         inputAndroid: {
                           color: '#000',
+                          fontFamily: 'Li Ador Noirrit',
                         },
                       }}
                     />
@@ -308,7 +329,10 @@ export default function BloodRequestForum({
                 rules={{
                   required: true,
                 }}
-                render={({field: {onChange, onBlur, value}}) => (
+                render={({
+                  field: {onChange, onBlur, value},
+                  fieldState: {error},
+                }) => (
                   <TextInput
                     placeholder={'হাসপাতালের নাম'}
                     onBlur={onBlur}
@@ -317,10 +341,11 @@ export default function BloodRequestForum({
                     placeholderTextColor={'#989898'}
                     style={{
                       color: '#000',
-                      borderColor: '#000',
+                      borderColor: !error ? '#000' : '#BF0000',
                       borderWidth: 1,
                       padding: 10,
                       marginBottom: 20,
+                      fontFamily: 'Li Ador Noirrit',
                     }}
                   />
                 )}
@@ -333,12 +358,15 @@ export default function BloodRequestForum({
                   rules={{
                     required: true,
                   }}
-                  render={({field: {onChange, onBlur, value}}) => {
+                  render={({
+                    field: {onChange, onBlur, value},
+                    fieldState: {error},
+                  }) => {
                     return (
                       <View
                         style={{
                           borderWidth: 1,
-                          borderColor: '#000',
+                          borderColor: !error ? '#000' : '#BF0000',
                           marginBottom: 20,
                           flexDirection: 'row',
                           justifyContent: 'space-between',
@@ -352,9 +380,10 @@ export default function BloodRequestForum({
                           placeholderTextColor={'#989898'}
                           style={{
                             color: '#000',
-                            borderColor: '#000',
+                            borderColor: !error ? '#000' : '#BF0000',
                             borderWidth: 0,
                             width: index === fields.length - 1 ? '50%' : '100%',
+                            fontFamily: 'Li Ador Noirrit',
                           }}
                           onKeyPress={({nativeEvent}) => {
                             if (
@@ -382,7 +411,9 @@ export default function BloodRequestForum({
                               style={{color: '#fff'}}
                               size={20}
                             />
-                            <Text style={{color: '#fff'}}>আরো যোগ করুন</Text>
+                            <MyText style={{color: '#fff'}}>
+                              আরো যোগ করুন
+                            </MyText>
                           </TouchableOpacity>
                         )}
                       </View>
@@ -396,7 +427,10 @@ export default function BloodRequestForum({
                 rules={{
                   required: true,
                 }}
-                render={({field: {onChange, onBlur, value}}) => (
+                render={({
+                  field: {onChange, onBlur, value},
+                  fieldState: {error},
+                }) => (
                   <TextInput
                     placeholder={'হোয়াটএপস নাম্বার'}
                     onBlur={onBlur}
@@ -405,10 +439,11 @@ export default function BloodRequestForum({
                     placeholderTextColor={'#989898'}
                     style={{
                       color: '#000',
-                      borderColor: '#000',
+                      borderColor: !error ? '#000' : '#BF0000',
                       borderWidth: 1,
                       padding: 10,
                       marginBottom: 20,
+                      fontFamily: 'Li Ador Noirrit',
                     }}
                   />
                 )}
@@ -419,7 +454,10 @@ export default function BloodRequestForum({
                 rules={{
                   required: false,
                 }}
-                render={({field: {onChange, onBlur, value}}) => (
+                render={({
+                  field: {onChange, onBlur, value},
+                  fieldState: {error},
+                }) => (
                   <TextInput
                     placeholder={'ফেসবুক একাউন্টের লিংক'}
                     onBlur={onBlur}
@@ -428,10 +466,11 @@ export default function BloodRequestForum({
                     placeholderTextColor={'#989898'}
                     style={{
                       color: '#000',
-                      borderColor: '#000',
+                      borderColor: !error ? '#000' : '#BF0000',
                       borderWidth: 1,
                       padding: 10,
                       marginBottom: 20,
+                      fontFamily: 'Li Ador Noirrit',
                     }}
                   />
                 )}
@@ -442,23 +481,27 @@ export default function BloodRequestForum({
                 rules={{
                   required: false,
                 }}
-                render={({field: {onChange, value}}) => (
+                render={({field: {onChange, value}, fieldState: {error}}) => (
                   <View
                     style={{
                       marginBottom: 20,
                       borderWidth: 1,
-                      borderColor: '#000',
+                      borderColor: !error ? '#000' : '#BF0000',
                     }}>
                     <RNPickerSelect
-                      style={{
-                        inputAndroid: {
-                          color: '#000000',
-                        },
+                      pickerProps={{
+                        style: {fontFamily: 'Li Ador Noirrit'},
                       }}
                       placeholder={{
                         label: 'রোগীর জেন্ডার',
                         value: null,
                         color: '#989898',
+                      }}
+                      style={{
+                        inputAndroid: {
+                          color: '#000',
+                          fontFamily: 'Li Ador Noirrit',
+                        },
                       }}
                       onValueChange={onChange}
                       value={value}
@@ -477,7 +520,10 @@ export default function BloodRequestForum({
                 rules={{
                   required: false,
                 }}
-                render={({field: {onChange, onBlur, value}}) => (
+                render={({
+                  field: {onChange, onBlur, value},
+                  fieldState: {error},
+                }) => (
                   <TextInput
                     placeholder={'আপনি রোগীর কি হোন?'}
                     onBlur={onBlur}
@@ -486,10 +532,11 @@ export default function BloodRequestForum({
                     placeholderTextColor={'#989898'}
                     style={{
                       color: '#000',
-                      borderColor: '#000',
+                      borderColor: !error ? '#000' : '#BF0000',
                       borderWidth: 1,
                       padding: 10,
                       marginBottom: 20,
+                      fontFamily: 'Li Ador Noirrit',
                     }}
                   />
                 )}
@@ -500,7 +547,7 @@ export default function BloodRequestForum({
                 rules={{
                   required: true,
                 }}
-                render={({field: {onChange, value}}) => {
+                render={({field: {onChange, value}, fieldState: {error}}) => {
                   return (
                     <>
                       <TextInput
@@ -515,10 +562,11 @@ export default function BloodRequestForum({
                         placeholderTextColor={'#989898'}
                         style={{
                           color: '#000',
-                          borderColor: '#000',
+                          borderColor: !error ? '#000' : '#BF0000',
                           borderWidth: 1,
                           padding: 10,
                           marginBottom: 20,
+                          fontFamily: 'Li Ador Noirrit',
                         }}
                         caretHidden={true}
                       />
@@ -553,7 +601,10 @@ export default function BloodRequestForum({
                       onChange(!value);
                     }}
                     checkBoxColor="#BF0000"
-                    rightTextStyle={{color: '#BF0000', fontWeight: 'bold'}}
+                    rightTextStyle={{
+                      color: '#BF0000',
+                      fontFamily: 'Li Ador Noirrit Bold',
+                    }}
                     isChecked={value}
                     // leftText={'CheckBox'}
                     rightText="যত দ্রুত সম্ভব রক্তের প্রয়োজন"
@@ -565,7 +616,10 @@ export default function BloodRequestForum({
                 rules={{
                   required: false,
                 }}
-                render={({field: {onChange, onBlur, value}}) => (
+                render={({
+                  field: {onChange, onBlur, value},
+                  fieldState: {error},
+                }) => (
                   <TextInput
                     placeholder={'বিস্তারিত'}
                     onBlur={onBlur}
@@ -574,11 +628,12 @@ export default function BloodRequestForum({
                     placeholderTextColor={'#989898'}
                     style={{
                       color: '#000',
-                      borderColor: '#000',
+                      borderColor: !error ? '#000' : '#BF0000',
                       borderWidth: 1,
                       padding: 10,
                       marginBottom: 20,
                       height: 150,
+                      fontFamily: 'Li Ador Noirrit',
                     }}
                   />
                 )}
@@ -587,26 +642,27 @@ export default function BloodRequestForum({
             </View>
             <TouchableOpacity
               onPress={
-                // eslint-disable-next-line no-extra-boolean-cast
-                !!errors
-                  ? handleSubmit(onSubmit)
-                  : () => {
-                      Toast.show({
-                        type: 'error',
-                        text1: 'Blood Request Failed!',
-                        text2: 'Please fill up all the requried fields',
-                      });
-                    }
+                handleSubmit(onSubmit)
+
+                //       Toast.show({
+                //         type: 'error',
+                //         text1: 'আবেদন ব্যর্থ হয়েছে',
+                //         text2: 'দয়া করে আব্যশ্যক ফিল্ডগুলি পূরণ করুন',
+                //       });
               }
               style={{
                 backgroundColor: '#BF0000',
                 padding: 10,
                 marginRight: 10,
               }}>
-              <Text
-                style={{color: '#fff', fontWeight: 800, textAlign: 'center'}}>
+              <MyText
+                style={{
+                  color: '#fff',
+                  textAlign: 'center',
+                  fontFamily: 'Li Ador Noirrit Bold',
+                }}>
                 সাবমিট
-              </Text>
+              </MyText>
             </TouchableOpacity>
           </View>
         </ScrollView>
