@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
-import {Image, View} from 'react-native';
+import {Image, Linking, TouchableOpacity, View} from 'react-native';
 
 export default function Header() {
   return (
@@ -18,14 +18,19 @@ export default function Header() {
       }}>
       {/* LOGO */}
       <Image source={require('../assets/logo-full.png')} height={40} />
-      <View
+      <TouchableOpacity
         style={{
           backgroundColor: '#E6F9EA',
-          paddingHorizontal: 5,
-          paddingVertical: 1,
-        }}>
+          padding: 5,
+          width: 40,
+        }}
+        onPress={() =>
+          Linking.openURL(
+            'https://www.whatsapp.com/channel/0029VafBUXv2v1InsGASJv1I',
+          )
+        }>
         <Image source={require('../assets/WhatsApp.png')} height={45} />
-      </View>
+      </TouchableOpacity>
     </View>
   );
 }

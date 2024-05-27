@@ -1,18 +1,23 @@
 /* eslint-disable prettier/prettier */
+
 import {NavigationProp} from '@react-navigation/native';
-import React from 'react';
+import moment from 'moment';
+import React, {useEffect, useState} from 'react';
 import {
   Image,
   Linking,
   Platform,
   ScrollView,
   StyleSheet,
-  Text,
   View,
 } from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import Toast from 'react-native-toast-message';
 import Feather from 'react-native-vector-icons/Feather';
 import Footer from '../components/Footer';
+import LoadingScreen from '../components/Loading';
+import MyText from '../components/MyText';
+import {API_URL} from '../config';
 import {IBloodSeeker} from '../types/BloodSeeker';
 import {toBn} from '../util/toBn';
 
@@ -25,22 +30,22 @@ export default function BloodSeekerDetails({
   };
   navigation: NavigationProp<any>;
 }) {
-  const {
-    blood_group,
-    hemoglobin_point,
-    patient_problem,
-    amount_of_blood,
-    district,
-    description,
-    hospital_name,
-    delivery_time,
-    id,
-    views_count,
-    mobile_number,
-    whatsapp_number,
-  } = route.params;
+  const id = route.params;
+  const [loading, setLoading] = useState(false);
 
-  const newAmountBlood = toBn(amount_of_blood.toString());
+  const [bloodDetails, setBloodDetails] = useState({
+    blood_group: '',
+    hemoglobin_point: '',
+    patient_problem: '',
+    amount_of_blood: '',
+    district: '',
+    description: '',
+    hospital_name: '',
+    delivery_time: '',
+    views_count: '',
+    mobile_number: '',
+    whatsapp_number: '',
+  });
 
   const makeCall = (number: string) => {
     let phoneNumber = '';
@@ -54,17 +59,44 @@ export default function BloodSeekerDetails({
     Linking.openURL(phoneNumber);
   };
 
-  const sendSMS = (number: string) => {
+  const sendSMS = async (number: string) => {
     let phoneNumber = '';
 
-    if (Platform.OS === 'android') {
-      phoneNumber = `sms:${number}`;
+    if (await Linking.openURL(`whatsapp://send?phone=${number}`)) {
+      phoneNumber = `whatsapp://send?phone=${number}`;
+      Linking.openURL(phoneNumber);
     } else {
-      phoneNumber = `sms:${number}`;
+      Toast.show({
+        type: 'error',
+        text1: 'Whatsapp message failed',
+        text2: 'You need to have whatsapp installed in your phone',
+      });
     }
 
-    Linking.openURL(phoneNumber);
+    // if (Platform.OS === 'android') {
+    //   phoneNumber = `sms:${number}`;
+    // } else {
+    //   phoneNumber = `sms:{number}`;
+    // }
+    // Linking.openURL(phoneNumber);
   };
+
+  useEffect(() => {
+    const loadBloodDetails = async () => {
+      try {
+        setLoading(true);
+        const res = await fetch(`${API_URL}/request/${id}`);
+        const data = await res.json();
+        setBloodDetails(data.data);
+        setLoading(false);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    loadBloodDetails();
+  }, [id]);
+
+  const newAmountBlood = toBn(bloodDetails?.amount_of_blood?.toString());
 
   return (
     <React.Fragment>
@@ -75,125 +107,164 @@ export default function BloodSeekerDetails({
           flex: 1,
           backgroundColor: '#ffffff',
         }}>
-        <ScrollView
-          style={{
-            flex: 1,
-            margin: 20,
-          }}>
-          {/* Blood Details info */}
-          <View>
-            <View
+        {loading ? (
+          <LoadingScreen />
+        ) : (
+          <>
+            <ScrollView
               style={{
-                backgroundColor: '#AE0000',
-                width: 50,
-                height: 50,
-                justifyContent: 'center',
-                alignItems: 'center',
+                flex: 1,
+                margin: 20,
               }}>
-              <Text style={{fontWeight: 600, color: '#FFF'}}>
-                {blood_group}
-              </Text>
-            </View>
-            <View style={{marginTop: 30}}>
-              <Text
+              {/* Blood Details info */}
+              <View>
+                <View
+                  style={{
+                    backgroundColor: '#AE0000',
+                    width: 50,
+                    height: 50,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  <MyText style={{fontWeight: 600, color: '#FFF'}}>
+                    {bloodDetails?.blood_group}
+                  </MyText>
+                </View>
+                <View style={{marginTop: 30}}>
+                  <MyText
+                    style={{
+                      color: '#000',
+                      marginTop: 20,
+                      marginBottom: 15,
+                      fontSize: 16,
+                    }}>
+                    রক্তের গ্রপঃ{' '}
+                    <MyText style={{color: '#BF0000'}}>
+                      {bloodDetails?.blood_group}
+                    </MyText>
+                  </MyText>
+                  <MyText
+                    style={{color: '#000', marginBottom: 15, fontSize: 16}}>
+                    হিমোগ্লোবিন পয়েন্টঃ{' '}
+                    <MyText style={{color: '#BF0000'}}>
+                      {bloodDetails?.hemoglobin_point
+                        ? bloodDetails?.hemoglobin_point
+                        : 'নেই'}
+                    </MyText>
+                  </MyText>
+                  <MyText
+                    style={{color: '#000', marginBottom: 15, fontSize: 16}}>
+                    রোগীর সমস্যাঃ{' '}
+                    <MyText style={{color: '#BF0000'}}>
+                      {bloodDetails?.patient_problem}
+                    </MyText>
+                  </MyText>
+                  <MyText
+                    style={{color: '#000', marginBottom: 15, fontSize: 16}}>
+                    রক্তের পরিমানঃ{' '}
+                    <MyText style={{color: '#BF0000'}}>
+                      {newAmountBlood} ব্যাগ
+                    </MyText>
+                  </MyText>
+                  <MyText
+                    style={{color: '#000', marginBottom: 15, fontSize: 16}}>
+                    জেলাঃ{' '}
+                    <MyText style={{color: '#BF0000'}}>
+                      {bloodDetails?.district}
+                    </MyText>
+                  </MyText>
+                  <MyText
+                    style={{color: '#000', marginBottom: 15, fontSize: 16}}>
+                    রক্তদানের তারিখঃ{' '}
+                    <MyText style={{color: '#BF0000'}}>
+                      {moment(bloodDetails?.delivery_time).format('LLL')}
+                    </MyText>
+                  </MyText>
+                  <MyText
+                    style={{color: '#000', marginBottom: 15, fontSize: 16}}>
+                    রক্তদানের স্থানঃ{' '}
+                    <MyText style={{color: '#BF0000'}}>
+                      {bloodDetails?.hospital_name}{' '}
+                    </MyText>
+                  </MyText>
+                  <MyText
+                    style={{
+                      color: '#000',
+                      marginBottom: 15,
+                      fontSize: 16,
+                    }}>
+                    সংক্ষিপ্ত বিবরনঃ{' '}
+                    <MyText style={{color: '#686868'}}>
+                      {bloodDetails?.description
+                        ? bloodDetails?.description
+                        : 'নেই'}
+                    </MyText>
+                  </MyText>
+                </View>
+              </View>
+              {/* HR */}
+              <View
                 style={{
-                  color: '#000',
+                  borderBottomColor: 'black',
+                  borderBottomWidth: StyleSheet.hairlineWidth,
+                }}
+              />
+              {/* Seen Count */}
+              <View
+                style={{
+                  flex: 1,
                   marginTop: 20,
-                  marginBottom: 15,
-                  fontSize: 16,
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
                 }}>
-                রক্তের গ্রপঃ{' '}
-                <Text style={{color: '#BF0000'}}>{blood_group}</Text>
-              </Text>
-              <Text style={{color: '#000', marginBottom: 15, fontSize: 16}}>
-                হিমোগ্লোবিন পয়েন্টঃ{' '}
-                <Text style={{color: '#BF0000'}}>{hemoglobin_point}</Text>
-              </Text>
-              <Text style={{color: '#000', marginBottom: 15, fontSize: 16}}>
-                রোগীর সমস্যাঃ{' '}
-                <Text style={{color: '#BF0000'}}>{patient_problem}</Text>
-              </Text>
-              <Text style={{color: '#000', marginBottom: 15, fontSize: 16}}>
-                রক্তের পরিমানঃ{' '}
-                <Text style={{color: '#BF0000'}}>{newAmountBlood} ব্যাগ</Text>
-              </Text>
-              <Text style={{color: '#000', marginBottom: 15, fontSize: 16}}>
-                জেলাঃ <Text style={{color: '#BF0000'}}>{district}</Text>
-              </Text>
-              <Text style={{color: '#000', marginBottom: 15, fontSize: 16}}>
-                রক্তদানের তারিখঃ{' '}
-                <Text style={{color: '#BF0000'}}>{delivery_time}</Text>
-              </Text>
-              <Text style={{color: '#000', marginBottom: 15, fontSize: 16}}>
-                রক্তদানের স্থানঃ{' '}
-                <Text style={{color: '#BF0000'}}>{hospital_name} </Text>
-              </Text>
-              <Text
+                <MyText style={{color: '#BF0000'}}>#{id}</MyText>
+                <MyText style={{color: '#B9B9B9'}}>
+                  আবেদনটি দেখা হয়েছে: {bloodDetails?.views_count}
+                </MyText>
+              </View>
+              {/* Button */}
+              <View
                 style={{
-                  color: '#000',
-                  marginBottom: 15,
-                  fontSize: 16,
+                  flex: 1,
+                  marginTop: 50,
+                  flexDirection: 'row',
+                  justifyContent: 'center',
                 }}>
-                সংক্ষিপ্ত বিবরনঃ{' '}
-                <Text style={{color: '#686868'}}>{description}</Text>
-              </Text>
-            </View>
-          </View>
-          {/* HR */}
-          <View
-            style={{
-              borderBottomColor: 'black',
-              borderBottomWidth: StyleSheet.hairlineWidth,
-            }}
-          />
-          {/* Seen Count */}
-          <View
-            style={{
-              flex: 1,
-              marginTop: 20,
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-            }}>
-            <Text style={{color: '#BF0000'}}>#{id}</Text>
-            <Text style={{color: '#B9B9B9'}}>
-              আবেদনটি দেখা হয়েছে: {views_count}
-            </Text>
-          </View>
-          {/* Button */}
-          <View
-            style={{
-              flex: 1,
-              marginTop: 50,
-              flexDirection: 'row',
-              justifyContent: 'center',
-            }}>
-            <TouchableOpacity
-              onPress={() => makeCall(mobile_number)}
-              style={{
-                backgroundColor: '#F9E6E6',
-                padding: 10,
-                marginRight: 10,
-              }}>
-              <Text style={{color: '#BF0000', fontWeight: 800}}>
-                <Feather
-                  name="phone"
-                  style={{fontSize: 15, color: '#AE0000'}}
-                />{' '}
-                কল করুন
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => sendSMS(whatsapp_number)}
-              style={{
-                backgroundColor: '#E6F9EA',
-                padding: 5,
-                width: 40,
-              }}>
-              <Image source={require('../assets/WhatsApp.png')} />
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-        <Footer navigation={navigation} />
+                <TouchableOpacity
+                  onPress={() => makeCall(bloodDetails?.mobile_number[0])}
+                  style={{
+                    backgroundColor: '#F9E6E6',
+                    padding: 10,
+                    marginRight: 10,
+                  }}>
+                  <MyText
+                    style={{
+                      color: '#BF0000',
+                      fontWeight: 800,
+                      position: 'relative',
+                    }}>
+                    {/* < */}
+                    <Feather
+                      name="phone"
+                      style={{fontSize: 15, color: '#AE0000'}}
+                    />{' '}
+                    কল করুন
+                  </MyText>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => sendSMS(bloodDetails?.whatsapp_number)}
+                  style={{
+                    backgroundColor: '#E6F9EA',
+                    padding: 5,
+                    width: 40,
+                  }}>
+                  <Image source={require('../assets/WhatsApp.png')} />
+                </TouchableOpacity>
+              </View>
+            </ScrollView>
+            <Footer navigation={navigation} />
+          </>
+        )}
       </View>
     </React.Fragment>
   );

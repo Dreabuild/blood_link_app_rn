@@ -1,56 +1,56 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-
 import {NavigationProp} from '@react-navigation/native';
-import React, {useEffect} from 'react';
-import {Text, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import SelectDropdown from 'react-native-select-dropdown';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import BloodSeekCard from '../components/BloodSeekCard';
 import Footer from '../components/Footer';
 import LoadingScreen from '../components/Loading';
+import MyText from '../components/MyText';
 import {API_URL} from '../config';
 import zillas from '../data/district.json';
 import {IBloodSeeker} from '../types/BloodSeeker';
+import {toBn} from '../util/toBn';
 
 const bloodGroups = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
 
 export default function Home({navigation}: {navigation: NavigationProp<any>}) {
-  const [selectedBloodGroup, setSelectedBloodGroup] = React.useState('');
-  const [loading, setLoading] = React.useState(false);
-  const [selectedZila, setSelectedZila] = React.useState({
+  const [selectedBloodGroup, setSelectedBloodGroup] = useState('');
+  const [selectedZila, setSelectedZila] = useState({
     bn_name: '',
     name: '',
   });
-  const [bloodData, setBloodData] = React.useState([]);
-
-  const onSelectedBloodGroup = async () => {
-    try {
-      setLoading(true);
-      const url = `${API_URL}/request${
-        selectedBloodGroup ? `?bloodGroup=${selectedBloodGroup}` : ''
-      }${
-        selectedZila.name
-          ? selectedBloodGroup
-            ? `&district=${selectedZila.name}`
-            : `?district=${selectedZila.name}`
-          : ''
-      }`;
-      const res = await fetch(url);
-      const {data} = await res.json();
-      setBloodData(data);
-    } catch (err: any) {
-    } finally {
-      setLoading(false);
-    }
-  };
-  useEffect(() => {
-    onSelectedBloodGroup();
-  }, [selectedBloodGroup, selectedZila]);
+  const [bloodData, setBloodData] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    const onSelectedBloodGroup = async () => {
+      try {
+        setLoading(true);
+        navigation.addListener('focus', async () => {
+          setLoading(true);
+          const url = `${API_URL}/request${
+            selectedBloodGroup ? `?bloodGroup=${selectedBloodGroup}` : ''
+          }${
+            selectedZila.name
+              ? selectedBloodGroup
+                ? `&district=${selectedZila.name}`
+                : `?district=${selectedZila.name}`
+              : ''
+          }`;
+          const res = await fetch(url);
+          const {data} = await res.json();
+          setBloodData(data);
+          setLoading(false);
+        });
+      } catch (err: any) {
+      } finally {
+        setLoading(false);
+      }
+    };
     onSelectedBloodGroup();
-  }, []);
+  }, [navigation, selectedBloodGroup, selectedZila.name]);
 
   return (
     <React.Fragment>
@@ -82,9 +82,9 @@ export default function Home({navigation}: {navigation: NavigationProp<any>}) {
                   renderItem={item => {
                     return (
                       <View>
-                        <Text style={{color: '#1e1e1e', padding: 10}}>
+                        <MyText style={{color: '#1e1e1e', padding: 10}}>
                           {item}
-                        </Text>
+                        </MyText>
                       </View>
                     );
                   }}
@@ -102,11 +102,11 @@ export default function Home({navigation}: {navigation: NavigationProp<any>}) {
                           justifyContent: 'space-between',
                           paddingHorizontal: 10,
                         }}>
-                        <Text style={{color: '#1e1e1e'}}>
+                        <MyText style={{color: '#1e1e1e'}}>
                           {selectedBloodGroup
                             ? selectedBloodGroup
                             : 'রক্তের গ্রুপ'}
-                        </Text>
+                        </MyText>
                         <Icon
                           name={isOpened ? 'chevron-up' : 'chevron-down'}
                           style={{fontSize: 28}}
@@ -124,9 +124,9 @@ export default function Home({navigation}: {navigation: NavigationProp<any>}) {
                   renderItem={item => {
                     return (
                       <View>
-                        <Text style={{color: '#1e1e1e', padding: 10}}>
+                        <MyText style={{color: '#1e1e1e', padding: 10}}>
                           {item.bn_name}
-                        </Text>
+                        </MyText>
                       </View>
                     );
                   }}
@@ -144,11 +144,11 @@ export default function Home({navigation}: {navigation: NavigationProp<any>}) {
                           justifyContent: 'space-between',
                           paddingHorizontal: 10,
                         }}>
-                        <Text style={{color: '#1e1e1e'}}>
+                        <MyText style={{color: '#1e1e1e'}}>
                           {selectedZila.bn_name
                             ? selectedZila.bn_name
                             : 'সকল জেলা'}
-                        </Text>
+                        </MyText>
                         <Icon
                           name={isOpened ? 'chevron-up' : 'chevron-down'}
                           style={{fontSize: 28}}
@@ -173,13 +173,15 @@ export default function Home({navigation}: {navigation: NavigationProp<any>}) {
                   paddingHorizontal: 20,
                   paddingBottom: 40,
                 }}>
-                <Text style={{color: '#000', fontWeight: '600'}}>
-                  <Text style={{color: '#AE0000'}}>
-                    {bloodData?.length ? bloodData?.length : 0}
-                  </Text>{' '}
+                <MyText style={{color: '#000', fontWeight: '600'}}>
+                  <MyText style={{color: '#AE0000'}}>
+                    {bloodData?.length
+                      ? toBn(bloodData?.length.toString())
+                      : '০'}
+                  </MyText>{' '}
                   টি আবেদন পাওয়া গেছে "
                   {selectedZila.bn_name ? selectedZila.bn_name : 'সকল'}" জেলায়
-                </Text>
+                </MyText>
               </View>
 
               {/* REQUEST LIST */}

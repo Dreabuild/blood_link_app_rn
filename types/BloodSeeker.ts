@@ -11,7 +11,10 @@ export interface IBloodSeeker {
   mobile_number: string[];
   whatsapp_number: string;
   facebook_account_url?: string;
-  gender?: 'male' | 'female';
+  views_count?: number;
+  call_count?: number;
+  message_count?: number;
+  gender?: 'male' | 'female' | 'other';
   relationship?: null | string;
   delivery_time: string;
   urgent: boolean;
@@ -30,6 +33,9 @@ export const bloodSeekerSchema = z
     whatsapp_number: z.string(),
     facebook_account_url: z.string().url().optional(),
     gender: z.enum(['male', 'female', 'other']).optional(),
+    views_count: z.number().default(0),
+    call_count: z.number().default(0),
+    message_count: z.number().default(0),
     relationship: z.string().optional(),
     delivery_time: z.date(),
     urgent: z.boolean().default(false),

@@ -2,7 +2,8 @@
 
 import {NavigationProp, useRoute} from '@react-navigation/native';
 import React from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
+import {TouchableOpacity, View} from 'react-native';
+import MyText from './MyText';
 
 export default function Footer({
   navigation,
@@ -37,18 +38,19 @@ export default function Footer({
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        <Text style={{color: '#AE0000', fontWeight: 600}}>
+        <MyText style={{color: '#AE0000', fontWeight: 600}}>
           {route.name === 'BloodBankList' || route.name === 'BloodSeekerDetails'
             ? 'হোম'
             : route.name === 'BloodBankDetails'
             ? 'হোম'
             : 'ব্যাংক হোম'}
-        </Text>
+        </MyText>
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() =>
           navigation.navigate(
             route.name === 'BloodRequestForum' ? 'Home' : 'BloodRequestForum',
+            route.name === 'Home' && {refresh: true},
           )
         }
         style={{
@@ -59,9 +61,9 @@ export default function Footer({
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        <Text style={{color: '#AE0000', fontWeight: 600}}>
+        <MyText style={{color: '#AE0000', fontWeight: 600}}>
           {route.name === 'BloodRequestForum' ? 'হোম' : 'নতুন আবেদন'}
-        </Text>
+        </MyText>
       </TouchableOpacity>
     </View>
   );

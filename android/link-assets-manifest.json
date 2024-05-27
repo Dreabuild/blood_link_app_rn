@@ -30,16 +30,16 @@
       "sha1": "02778dffe81451f5518f79ea7c2390d285fa455b"
     },
     {
-      "path": "assets/fonts/Li Ador Noirrit Regular.ttf",
-      "sha1": "43489528720379cefc5ed7ee7bf92991cc2851dd"
-    },
-    {
       "path": "assets/fonts/Li Ador Noirrit SemiBold Italic.ttf",
       "sha1": "81f0cf9fafc5b6d2533875ad99b38025218811eb"
     },
     {
       "path": "assets/fonts/Li Ador Noirrit SemiBold.ttf",
       "sha1": "8641de83012a8581446ae8464152904b9d7e1884"
+    },
+    {
+      "path": "assets/fonts/Li Ador Noirrit.ttf",
+      "sha1": "43489528720379cefc5ed7ee7bf92991cc2851dd"
     }
   ]
 }

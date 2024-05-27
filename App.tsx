@@ -15,22 +15,30 @@ import Home from './screens/Home';
 
 import {NavigationContainer} from '@react-navigation/native';
 import SplashScreen from 'react-native-splash-screen';
-import Toast from 'react-native-toast-message';
+import Toast, {BaseToast, ErrorToast} from 'react-native-toast-message';
 import Header from './components/Header';
 import BloodSeekerDetails from './screens/BloodSeekerDetails';
 
 const Stack = createStackNavigator();
 
-// const customTextInputProps = {
-//   underlineColorAndroid: 'rgba(0,0,0,0)',
-//   style: {
-//     borderWidth: 1,
-//     borderColor: 'gray',
-//     paddingVertical: 5,
-//     paddingHorizontal: 10,
-//     backgroundColor: 'white',
-//   },
-// };
+const toastConfig = {
+  error: (props: any) => (
+    <ErrorToast
+      {...props}
+      style={{borderLeftColor: '#BF0000'}}
+      text1Style={{fontWeight: 'normal', fontFamily: 'Li Ador Noirrit Bold'}}
+      text2Style={{fontFamily: 'Li Ador Noirrit'}}
+    />
+  ),
+  success: (props: any) => (
+    <BaseToast
+      {...props}
+      style={{borderLeftColor: '#5cb85c'}}
+      text1Style={{fontWeight: 'normal', fontFamily: 'Li Ador Noirrit Bold'}}
+      text2Style={{fontFamily: 'Li Ador Noirrit'}}
+    />
+  ),
+};
 
 function App(): React.JSX.Element {
   useEffect(() => {
@@ -56,7 +64,7 @@ function App(): React.JSX.Element {
           component={BloodSeekerDetails}
         />
       </Stack.Navigator>
-      <Toast />
+      <Toast config={toastConfig} />
     </NavigationContainer>
   );
 }

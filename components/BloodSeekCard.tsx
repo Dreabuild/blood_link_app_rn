@@ -1,10 +1,11 @@
 import {NavigationProp} from '@react-navigation/native';
 import React from 'react';
-import {Text, View} from 'react-native';
+import {View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import Feather from 'react-native-vector-icons/Feather';
 import {IBloodSeeker} from '../types/BloodSeeker';
 import {toBn} from '../util/toBn';
+import MyText from './MyText';
 
 const BloodSeekCard = ({
   seeker,
@@ -16,7 +17,7 @@ const BloodSeekCard = ({
   const newBloodAmount: string = toBn(seeker.amount_of_blood.toString());
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate('BloodSeekerDetails', seeker)}
+      onPress={() => navigation.navigate('BloodSeekerDetails', seeker.id)}
       style={{
         padding: 12,
         borderWidth: 0.7,
@@ -38,11 +39,11 @@ const BloodSeekCard = ({
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          <Text style={{fontWeight: 600, color: '#FFF'}}>
+          <MyText style={{fontWeight: 600, color: '#FFF'}}>
             {seeker.blood_group}
-          </Text>
+          </MyText>
         </View>
-        <Text style={{color: '#989898', fontSize: 13}}>#{seeker.id}</Text>
+        <MyText style={{color: '#989898', fontSize: 13}}>#{seeker.id}</MyText>
       </View>
       <View
         style={{
@@ -51,10 +52,10 @@ const BloodSeekCard = ({
           marginBottom: 35,
         }}>
         <View>
-          <Text style={{color: '#000'}}>{seeker.hospital_name}</Text>
-          <Text style={{color: '#000'}}>{seeker.district}</Text>
+          <MyText style={{color: '#000'}}>{seeker.hospital_name}</MyText>
+          <MyText style={{color: '#000'}}>{seeker.district}</MyText>
         </View>
-        <Text style={{color: '#AE0000'}}>{newBloodAmount} ব্যাগ</Text>
+        <MyText style={{color: '#AE0000'}}>{newBloodAmount} ব্যাগ</MyText>
       </View>
       <View
         style={{

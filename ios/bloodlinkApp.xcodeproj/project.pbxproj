@@ -21,9 +21,9 @@
 		EC75AE31647843D697C3C059 /* Li Ador Noirrit Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 27D5FEA18EE743799D0E1071 /* Li Ador Noirrit Italic.ttf */; };
 		82578380EC024427BE479EE3 /* Li Ador Noirrit Light Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F2DE22666C3F479AA7F368A5 /* Li Ador Noirrit Light Italic.ttf */; };
 		4ACEEC7F3BF34EEEB0A2821E /* Li Ador Noirrit Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BC87B80F171945EA92C09D6F /* Li Ador Noirrit Light.ttf */; };
-		EA4ADC1DBDC74340AE992FCF /* Li Ador Noirrit Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 65545DEB4E5C47078D0C7AA0 /* Li Ador Noirrit Regular.ttf */; };
 		ADACC73932D04EB3872FB00B /* Li Ador Noirrit SemiBold Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 008487CD95254BC9ACE0254A /* Li Ador Noirrit SemiBold Italic.ttf */; };
 		8B01EF8903F34323B924E1EE /* Li Ador Noirrit SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FCC0431E4B4446DFA85C2215 /* Li Ador Noirrit SemiBold.ttf */; };
+		BF5C4B3747024DA1B84AAF5E /* Li Ador Noirrit.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 16D48ACEAF2A4BC699637CE4 /* Li Ador Noirrit.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,9 +62,9 @@
 		27D5FEA18EE743799D0E1071 /* Li Ador Noirrit Italic.ttf */ = {isa = PBXFileReference; name = "Li Ador Noirrit Italic.ttf"; path = "../assets/fonts/Li Ador Noirrit Italic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		F2DE22666C3F479AA7F368A5 /* Li Ador Noirrit Light Italic.ttf */ = {isa = PBXFileReference; name = "Li Ador Noirrit Light Italic.ttf"; path = "../assets/fonts/Li Ador Noirrit Light Italic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		BC87B80F171945EA92C09D6F /* Li Ador Noirrit Light.ttf */ = {isa = PBXFileReference; name = "Li Ador Noirrit Light.ttf"; path = "../assets/fonts/Li Ador Noirrit Light.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		65545DEB4E5C47078D0C7AA0 /* Li Ador Noirrit Regular.ttf */ = {isa = PBXFileReference; name = "Li Ador Noirrit Regular.ttf"; path = "../assets/fonts/Li Ador Noirrit Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		008487CD95254BC9ACE0254A /* Li Ador Noirrit SemiBold Italic.ttf */ = {isa = PBXFileReference; name = "Li Ador Noirrit SemiBold Italic.ttf"; path = "../assets/fonts/Li Ador Noirrit SemiBold Italic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		FCC0431E4B4446DFA85C2215 /* Li Ador Noirrit SemiBold.ttf */ = {isa = PBXFileReference; name = "Li Ador Noirrit SemiBold.ttf"; path = "../assets/fonts/Li Ador Noirrit SemiBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		16D48ACEAF2A4BC699637CE4 /* Li Ador Noirrit.ttf */ = {isa = PBXFileReference; name = "Li Ador Noirrit.ttf"; path = "../assets/fonts/Li Ador Noirrit.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -181,9 +181,9 @@
 				27D5FEA18EE743799D0E1071 /* Li Ador Noirrit Italic.ttf */,
 				F2DE22666C3F479AA7F368A5 /* Li Ador Noirrit Light Italic.ttf */,
 				BC87B80F171945EA92C09D6F /* Li Ador Noirrit Light.ttf */,
-				65545DEB4E5C47078D0C7AA0 /* Li Ador Noirrit Regular.ttf */,
 				008487CD95254BC9ACE0254A /* Li Ador Noirrit SemiBold Italic.ttf */,
 				FCC0431E4B4446DFA85C2215 /* Li Ador Noirrit SemiBold.ttf */,
+				16D48ACEAF2A4BC699637CE4 /* Li Ador Noirrit.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -291,9 +291,9 @@
 				EC75AE31647843D697C3C059 /* Li Ador Noirrit Italic.ttf in Resources */,
 				82578380EC024427BE479EE3 /* Li Ador Noirrit Light Italic.ttf in Resources */,
 				4ACEEC7F3BF34EEEB0A2821E /* Li Ador Noirrit Light.ttf in Resources */,
-				EA4ADC1DBDC74340AE992FCF /* Li Ador Noirrit Regular.ttf in Resources */,
 				ADACC73932D04EB3872FB00B /* Li Ador Noirrit SemiBold Italic.ttf in Resources */,
 				8B01EF8903F34323B924E1EE /* Li Ador Noirrit SemiBold.ttf in Resources */,
+				BF5C4B3747024DA1B84AAF5E /* Li Ador Noirrit.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
