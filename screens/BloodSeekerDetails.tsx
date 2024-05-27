@@ -1,6 +1,15 @@
+/* eslint-disable prettier/prettier */
 import {NavigationProp} from '@react-navigation/native';
 import React from 'react';
-import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {
+  Image,
+  Linking,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import Feather from 'react-native-vector-icons/Feather';
 import Footer from '../components/Footer';
@@ -26,9 +35,37 @@ export default function BloodSeekerDetails({
     hospital_name,
     delivery_time,
     id,
+    views_count,
+    mobile_number,
+    whatsapp_number,
   } = route.params;
 
   const newAmountBlood = toBn(amount_of_blood.toString());
+
+  const makeCall = (number: string) => {
+    let phoneNumber = '';
+
+    if (Platform.OS === 'android') {
+      phoneNumber = `tel:${number}`;
+    } else {
+      phoneNumber = `telprompt:${number}`;
+    }
+
+    Linking.openURL(phoneNumber);
+  };
+
+  const sendSMS = (number: string) => {
+    let phoneNumber = '';
+
+    if (Platform.OS === 'android') {
+      phoneNumber = `sms:${number}`;
+    } else {
+      phoneNumber = `sms:${number}`;
+    }
+
+    Linking.openURL(phoneNumber);
+  };
+
   return (
     <React.Fragment>
       <View
@@ -118,7 +155,9 @@ export default function BloodSeekerDetails({
               justifyContent: 'space-between',
             }}>
             <Text style={{color: '#BF0000'}}>#{id}</Text>
-            <Text style={{color: '#B9B9B9'}}>আবেদনটি দেখা হয়েছে: 9</Text>
+            <Text style={{color: '#B9B9B9'}}>
+              আবেদনটি দেখা হয়েছে: {views_count}
+            </Text>
           </View>
           {/* Button */}
           <View
@@ -129,6 +168,7 @@ export default function BloodSeekerDetails({
               justifyContent: 'center',
             }}>
             <TouchableOpacity
+              onPress={() => makeCall(mobile_number)}
               style={{
                 backgroundColor: '#F9E6E6',
                 padding: 10,
@@ -143,6 +183,7 @@ export default function BloodSeekerDetails({
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
+              onPress={() => sendSMS(whatsapp_number)}
               style={{
                 backgroundColor: '#E6F9EA',
                 padding: 5,

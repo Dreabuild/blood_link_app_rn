@@ -2,40 +2,37 @@ import {z} from 'zod';
 
 export interface IBloodSeeker {
   id: number;
-  blood_group: string;
-  hemoglobin_point?: number | null;
+  blood_group: 'A+' | 'A-' | 'B+' | 'B-' | 'O+' | 'O-' | 'AB+' | 'AB-';
+  hemoglobin_point?: number;
   amount_of_blood: number;
   patient_problem: string;
   district: string;
   hospital_name: string;
   mobile_number: string[];
-  views_count: number;
-  call_count: number;
-  message_count: number;
-  whatsapp_number?: string;
+  whatsapp_number: string;
   facebook_account_url?: string;
-  gender?: 'male' | 'female' | 'other';
-  relationship?: string;
-  delivery_time: Date;
+  gender?: 'male' | 'female';
+  relationship?: null | string;
+  delivery_time: string;
   urgent: boolean;
   description?: string;
 }
 
-export const requestSchema = z
+export const bloodSeekerSchema = z
   .object({
-    blood_group: z.string().min(1),
+    blood_group: z.enum(['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-']),
     hemoglobin_point: z.number().optional(),
     amount_of_blood: z.number().int().positive(),
-    patient_problem: z.string().min(1),
+    patient_problem: z.string(),
     district: z.string().min(1),
     hospital_name: z.string().min(1),
-    mobile_number: z.array(z.string()),
+    mobile_number: z.array(z.string()).min(1),
     whatsapp_number: z.string(),
     facebook_account_url: z.string().url().optional(),
     gender: z.enum(['male', 'female', 'other']).optional(),
     relationship: z.string().optional(),
     delivery_time: z.date(),
-    urgent: z.boolean().default(true),
+    urgent: z.boolean().default(false),
     description: z.string().optional(),
   })
   .required();
