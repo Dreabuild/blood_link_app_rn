@@ -99,7 +99,7 @@ export default function BloodRequestForum({
     } catch (error) {
       Toast.show({
         type: 'error',
-        text1: 'Blood Request Failed',
+        text1: 'নতুন আবেদন ব্যর্থ',
         text2: 'দুঃখিত, আরেকবার চেষ্টা করুন',
       });
     }
@@ -641,15 +641,7 @@ export default function BloodRequestForum({
               />
             </View>
             <TouchableOpacity
-              onPress={
-                handleSubmit(onSubmit)
-
-                //       Toast.show({
-                //         type: 'error',
-                //         text1: 'আবেদন ব্যর্থ হয়েছে',
-                //         text2: 'দয়া করে আব্যশ্যক ফিল্ডগুলি পূরণ করুন',
-                //       });
-              }
+              onPress={handleSubmit(onSubmit)}
               style={{
                 backgroundColor: '#BF0000',
                 padding: 10,

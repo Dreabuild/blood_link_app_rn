@@ -6,6 +6,7 @@ import {
   Linking,
   Platform,
   ScrollView,
+  TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -89,7 +90,30 @@ export default function BloodBankList({
                   paddingHorizontal: 4,
                   paddingVertical: 10,
                   gap: 10,
+                  marginHorizontal: 10,
                 }}>
+                <MyText
+                  style={{
+                    color: '#BF0000',
+                    fontSize: 20,
+                    marginTop: 20,
+                    marginBottom: 20,
+                    textAlign: 'center',
+                  }}>
+                  সকল ব্লাড ব্যাংক
+                </MyText>
+                <TextInput
+                  placeholder={'ব্লাড ব্যাংক খুজুন'}
+                  placeholderTextColor={'#989898'}
+                  style={{
+                    color: '#000',
+                    borderWidth: 1,
+                    width: '100%',
+                    padding: 10,
+                    marginBottom: 20,
+                    fontFamily: 'Li Ador Noirrit',
+                  }}
+                />
                 {bankList.map((item: IBloodBank, index) => (
                   <ImageBackground
                     src={item.image}

@@ -18,6 +18,7 @@ import SplashScreen from 'react-native-splash-screen';
 import Toast, {BaseToast, ErrorToast} from 'react-native-toast-message';
 import Header from './components/Header';
 import BloodSeekerDetails from './screens/BloodSeekerDetails';
+import ReviewForum from './screens/ReviewForum';
 
 const Stack = createStackNavigator();
 
@@ -59,6 +60,7 @@ function App(): React.JSX.Element {
         <Stack.Screen name="BloodRequestForum" component={BloodRequestForum} />
         <Stack.Screen name="BloodBankDetails" component={BloodBankDetails} />
         <Stack.Screen name="BloodBankList" component={BloodBankList} />
+        <Stack.Screen name="ReviewForum" component={ReviewForum} />
         <Stack.Screen
           name="BloodSeekerDetails"
           component={BloodSeekerDetails}

@@ -1,6 +1,8 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
 import {Image, Linking, TouchableOpacity, View} from 'react-native';
+import Feather from 'react-native-vector-icons/Feather';
+import MyText from './MyText';
 
 export default function Header() {
   return (
@@ -30,6 +32,23 @@ export default function Header() {
           )
         }>
         <Image source={require('../assets/WhatsApp.png')} height={45} />
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => Linking.openURL('tel:8801325986307')}
+        style={{
+          backgroundColor: '#F9E6E6',
+          padding: 10,
+        }}>
+        <MyText
+          style={{
+            color: '#BF0000',
+            fontWeight: 800,
+            position: 'relative',
+          }}>
+          {/* < */}
+          <Feather name="phone" style={{fontSize: 15, color: '#AE0000'}} />{' '}
+          যোগাযোগ করুন
+        </MyText>
       </TouchableOpacity>
     </View>
   );
