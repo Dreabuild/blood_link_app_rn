@@ -2,8 +2,9 @@
 
 import {NavigationProp, useRoute} from '@react-navigation/native';
 import React from 'react';
-import {TouchableOpacity, View} from 'react-native';
+import {Image, TouchableOpacity, View} from 'react-native';
 import MyText from './MyText';
+import Feather from 'react-native-vector-icons/Feather';
 
 export default function Footer({
   navigation,
@@ -37,14 +38,28 @@ export default function Footer({
           paddingVertical: 8,
           justifyContent: 'center',
           alignItems: 'center',
+          flexDirection: 'row',
+          gap: 6,
         }}>
-        <MyText style={{color: '#AE0000', fontWeight: 600}}>
-          {route.name === 'BloodBankList' || route.name === 'BloodSeekerDetails'
-            ? 'হোম'
-            : route.name === 'BloodBankDetails'
-            ? 'হোম'
-            : 'ব্যাংক হোম'}
-        </MyText>
+        {route.name === 'BloodBankList' ||
+        route.name === 'BloodSeekerDetails' ? (
+          <>
+            <Feather name="home" size={18} color="#AE0000" />
+            <MyText style={{color: '#AE0000', fontWeight: 600}}>হোম</MyText>
+          </>
+        ) : route.name === 'BloodBankDetails' ? (
+          <>
+            <Feather name="home" size={18} color="#AE0000" />
+            <MyText style={{color: '#AE0000', fontWeight: 600}}>হোম</MyText>
+          </>
+        ) : (
+          <>
+            <Image source={require('../assets/icons/Union.png')} height={30} />
+            <MyText style={{color: '#AE0000', fontWeight: 600}}>
+              ব্লাড ব্যাংক
+            </MyText>
+          </>
+        )}
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() =>
@@ -60,10 +75,25 @@ export default function Footer({
           paddingVertical: 8,
           justifyContent: 'center',
           alignItems: 'center',
+          flexDirection: 'row',
+          gap: 6,
         }}>
-        <MyText style={{color: '#AE0000', fontWeight: 600}}>
-          {route.name === 'BloodRequestForum' ? 'হোম' : 'নতুন আবেদন'}
-        </MyText>
+        {route.name === 'BloodRequestForum' ? (
+          <>
+            <Feather name="home" size={18} color="#AE0000" />
+            <MyText style={{color: '#AE0000', fontWeight: 600}}>হোম</MyText>
+          </>
+        ) : (
+          <>
+            <Image
+              source={require('../assets/icons/folder-plus.png')}
+              height={30}
+            />
+            <MyText style={{color: '#AE0000', fontWeight: 600}}>
+              নতুন আবেদন
+            </MyText>
+          </>
+        )}
       </TouchableOpacity>
     </View>
   );
