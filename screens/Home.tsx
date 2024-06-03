@@ -25,25 +25,22 @@ export default function Home({navigation}: {navigation: NavigationProp<any>}) {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    console.log('Home Screen', selectedBloodGroup);
     const onSelectedBloodGroup = async () => {
       try {
         setLoading(true);
         // navigation.addListener('focus', async () => {
         setLoading(true);
-        const url = `${API_URL}/request${
-          selectedBloodGroup ? `?bloodGroup=${selectedBloodGroup}` : ''
+        const url = `${API_URL}/request?${
+          selectedBloodGroup ? `&bloodGroup=${selectedBloodGroup}` : ''
         }${
-          selectedZila.bn_name !== 'সকল জেলা'
-            ? selectedBloodGroup
-              ? `&district=${selectedZila.bn_name}`
-              : `?district=${selectedZila.bn_name}`
-            : ''
+          ['সকল জেলা', ''].includes(selectedZila.bn_name)
+            ? ''
+            : `&district=${selectedZila.bn_name}`
         }`;
         console.log(url);
         const res = await fetch(url);
         const {data} = await res.json();
-        console.log(data);
+
         setBloodData(data);
         setLoading(false);
         // });
