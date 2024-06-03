@@ -25,32 +25,35 @@ export default function Home({navigation}: {navigation: NavigationProp<any>}) {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    console.log('Home Screen', selectedBloodGroup);
     const onSelectedBloodGroup = async () => {
       try {
         setLoading(true);
-        navigation.addListener('focus', async () => {
-          setLoading(true);
-          const url = `${API_URL}/request${
-            selectedBloodGroup ? `?bloodGroup=${selectedBloodGroup}` : ''
-          }${
-            selectedZila.name
-              ? selectedBloodGroup
-                ? `&district=${selectedZila.name}`
-                : `?district=${selectedZila.name}`
-              : ''
-          }`;
-          const res = await fetch(url);
-          const {data} = await res.json();
-          setBloodData(data);
-          setLoading(false);
-        });
+        // navigation.addListener('focus', async () => {
+        setLoading(true);
+        const url = `${API_URL}/request${
+          selectedBloodGroup ? `?bloodGroup=${selectedBloodGroup}` : ''
+        }${
+          selectedZila.bn_name !== 'সকল জেলা'
+            ? selectedBloodGroup
+              ? `&district=${selectedZila.bn_name}`
+              : `?district=${selectedZila.bn_name}`
+            : ''
+        }`;
+        console.log(url);
+        const res = await fetch(url);
+        const {data} = await res.json();
+        console.log(data);
+        setBloodData(data);
+        setLoading(false);
+        // });
       } catch (err: any) {
       } finally {
         setLoading(false);
       }
     };
     onSelectedBloodGroup();
-  }, [navigation, selectedBloodGroup, selectedZila.name]);
+  }, [navigation, selectedBloodGroup, selectedZila.bn_name]);
 
   return (
     <React.Fragment>
