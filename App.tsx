@@ -31,6 +31,7 @@ import Header from './components/Header';
 import BloodSeekerDetails from './screens/BloodSeekerDetails';
 import Feather from 'react-native-vector-icons/Feather';
 import SubmitReview from './screens/SubmitReview';
+import PrivacyPolicy from './screens/PrivacyPolicy';
 
 const Drawer = createDrawerNavigator();
 
@@ -82,6 +83,7 @@ function App(): React.JSX.Element {
           component={BloodSeekerDetails}
         />
         <Drawer.Screen name="ReviewScreen" component={SubmitReview} />
+        <Drawer.Screen name="PrivacyPolicy" component={PrivacyPolicy} />
       </Drawer.Navigator>
       <Toast config={toastConfig} />
     </NavigationContainer>
@@ -126,6 +128,7 @@ function DrawerContent({navigation}: DrawerNavigationProp<any>) {
             <Image source={require('./assets/WhatsApp.png')} height={45} />
           </TouchableOpacity>
           <TouchableOpacity
+            onPress={() => Linking.openURL('mailto:team@bloodlink.app')}
             style={{
               width: '100%',
               height: 40,
@@ -135,9 +138,9 @@ function DrawerContent({navigation}: DrawerNavigationProp<any>) {
               justifyContent: 'center',
               alignItems: 'center',
             }}>
-            <Feather name="phone" size={20} color="#BF0000" />
+            <Feather name="mail" size={20} color="#BF0000" />
             <Text style={{marginLeft: 5, color: '#BF0000', fontWeight: 'bold'}}>
-              যোগাযোগ করুন
+              ই-মেইল করুন
             </Text>
           </TouchableOpacity>
         </View>
@@ -155,7 +158,8 @@ function DrawerContent({navigation}: DrawerNavigationProp<any>) {
             }>
             <Text style={{color: '#AE0000'}}>www.bloodlinkfoundation.com</Text>
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('PrivacyPolicy')}>
             <Text style={{color: '#AE0000'}}>Privacy Policy</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate('ReviewScreen')}>
