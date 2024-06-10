@@ -1,5 +1,6 @@
 #import "AppDelegate.h"
-
+#import <React/RCTRootView.h>
+#import "RNSplashScreen.h"
 #import <React/RCTBundleURLProvider.h>
 
 @implementation AppDelegate
