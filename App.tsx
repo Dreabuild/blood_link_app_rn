@@ -5,31 +5,25 @@
  * @format
  */
 
-import {createStackNavigator} from '@react-navigation/stack';
 import React, {useEffect} from 'react';
-import {
-  Image,
-  Linking,
-  StatusBar,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Image, Linking, StatusBar, TouchableOpacity, View} from 'react-native';
 import BloodBankDetails from './screens/BloodBankDetails';
 import BloodBankList from './screens/BloodBankList';
 import BloodRequestForum from './screens/BloodRequestForum';
 import Home from './screens/Home';
 
-import {NavigationContainer} from '@react-navigation/native';
 import {
   DrawerNavigationProp,
   createDrawerNavigator,
 } from '@react-navigation/drawer';
+import {NavigationContainer} from '@react-navigation/native';
 import SplashScreen from 'react-native-splash-screen';
 import Toast, {BaseToast, ErrorToast} from 'react-native-toast-message';
-import Header from './components/Header';
-import BloodSeekerDetails from './screens/BloodSeekerDetails';
 import Feather from 'react-native-vector-icons/Feather';
+import Header from './components/Header';
+import MyText from './components/MyText';
+import BloodDonarForum from './screens/BloodDonarForum';
+import BloodSeekerDetails from './screens/BloodSeekerDetails';
 import SubmitReview from './screens/SubmitReview';
 
 const Drawer = createDrawerNavigator();
@@ -39,16 +33,16 @@ const toastConfig = {
     <ErrorToast
       {...props}
       style={{borderLeftColor: '#BF0000'}}
-      text1Style={{fontWeight: 'normal', fontFamily: 'Li Ador Noirrit Bold'}}
-      text2Style={{fontFamily: 'Li Ador Noirrit'}}
+      Text1Style={{fontWeight: 'normal', fontFamily: 'Li Ador Noirrit Bold'}}
+      Text2Style={{fontFamily: 'Li Ador Noirrit'}}
     />
   ),
   success: (props: any) => (
     <BaseToast
       {...props}
       style={{borderLeftColor: '#5cb85c'}}
-      text1Style={{fontWeight: 'normal', fontFamily: 'Li Ador Noirrit Bold'}}
-      text2Style={{fontFamily: 'Li Ador Noirrit'}}
+      Text1Style={{fontWeight: 'normal', fontFamily: 'Li Ador Noirrit Bold'}}
+      Text2Style={{fontFamily: 'Li Ador Noirrit'}}
     />
   ),
 };
@@ -82,6 +76,7 @@ function App(): React.JSX.Element {
           component={BloodSeekerDetails}
         />
         <Drawer.Screen name="ReviewScreen" component={SubmitReview} />
+        <Drawer.Screen name="DonarRegistration" component={BloodDonarForum} />
       </Drawer.Navigator>
       <Toast config={toastConfig} />
     </NavigationContainer>
@@ -136,9 +131,35 @@ function DrawerContent({navigation}: DrawerNavigationProp<any>) {
               alignItems: 'center',
             }}>
             <Feather name="phone" size={20} color="#BF0000" />
-            <Text style={{marginLeft: 5, color: '#BF0000', fontWeight: 'bold'}}>
+            <MyText
+              style={{
+                marginLeft: 5,
+                color: '#BF0000',
+                fontFamily: 'Li Ador Noirrit Bold',
+              }}>
               যোগাযোগ করুন
-            </Text>
+            </MyText>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              width: '100%',
+              height: 40,
+              backgroundColor: '#F9E6E6',
+              flexDirection: 'row',
+              padding: 5,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onPress={() => navigation.navigate('DonarRegistration')}>
+            <Feather name="plus" size={20} color="#BF0000" />
+            <MyText
+              style={{
+                marginLeft: 5,
+                color: '#BF0000',
+                fontFamily: 'Li Ador Noirrit Bold',
+              }}>
+              ডোনার রেজিস্ট্রেশন
+            </MyText>
           </TouchableOpacity>
         </View>
         <View
@@ -153,13 +174,16 @@ function DrawerContent({navigation}: DrawerNavigationProp<any>) {
             onPress={() =>
               Linking.openURL('https://www.bloodlinkfoundation.com')
             }>
-            <Text style={{color: '#AE0000'}}>www.bloodlinkfoundation.com</Text>
+            <MyText style={{color: '#AE0000'}}>BloodLink Foundation</MyText>
           </TouchableOpacity>
-          <TouchableOpacity>
-            <Text style={{color: '#AE0000'}}>Privacy Policy</Text>
+          <TouchableOpacity
+            onPress={() =>
+              Linking.openURL('https://bloodlinkfoundation.com/privacy-policy')
+            }>
+            <MyText style={{color: '#AE0000'}}>Privacy Policy</MyText>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate('ReviewScreen')}>
-            <Text style={{color: '#AE0000'}}>Review</Text>
+            <MyText style={{color: '#AE0000'}}>Review</MyText>
           </TouchableOpacity>
         </View>
       </View>

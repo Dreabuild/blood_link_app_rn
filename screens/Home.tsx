@@ -37,7 +37,6 @@ export default function Home({navigation}: {navigation: NavigationProp<any>}) {
             ? ''
             : `&district=${selectedZila.bn_name}`
         }`;
-        console.log(url);
         const res = await fetch(url);
         const {data} = await res.json();
 
