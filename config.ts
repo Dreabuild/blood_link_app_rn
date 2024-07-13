@@ -1,1 +1,1 @@
-export const API_URL = 'https://blood-link-backend-iota.vercel.app/api/v1';
+export const API_URL = 'https://api.bloodlink.app/api/v1/';
