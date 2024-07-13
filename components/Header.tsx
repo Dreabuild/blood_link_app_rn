@@ -1,10 +1,10 @@
 /* eslint-disable prettier/prettier */
+import {DrawerNavigationProp} from '@react-navigation/drawer';
 import React from 'react';
-import {Image, Linking, TouchableOpacity, View} from 'react-native';
+import {Image, TouchableOpacity, View} from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
-import MyText from './MyText';
 
-export default function Header() {
+export default function Header({navigation}: DrawerNavigationProp<any>) {
   return (
     <View
       style={{
@@ -20,18 +20,8 @@ export default function Header() {
       }}>
       {/* LOGO */}
       <Image source={require('../assets/logo-full.png')} height={40} />
-      <TouchableOpacity
-        style={{
-          backgroundColor: '#E6F9EA',
-          padding: 5,
-          width: 40,
-        }}
-        onPress={() =>
-          Linking.openURL(
-            'https://www.whatsapp.com/channel/0029VafBUXv2v1InsGASJv1I',
-          )
-        }>
-        <Image source={require('../assets/WhatsApp.png')} height={45} />
+      <TouchableOpacity onPress={() => navigation.openDrawer()}>
+        <Feather name="menu" size={25} color="#AE0000" />
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => Linking.openURL('tel:8801325986307')}

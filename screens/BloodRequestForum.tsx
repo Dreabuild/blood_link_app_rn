@@ -24,11 +24,7 @@ export default function BloodRequestForum({
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
 
-  const {
-    control,
-    handleSubmit,
-    formState: {errors},
-  } = useForm({
+  const {control, handleSubmit, reset} = useForm({
     defaultValues: {
       blood_group: '',
       hemoglobin_point: '',
@@ -49,7 +45,6 @@ export default function BloodRequestForum({
 
   const onSubmit = async (data: any) => {
     try {
-      // console.log('sbumit e click');
       const mobile_numbers = data.mobile_numbers.map(
         (number: any) => number.number,
       );
@@ -71,7 +66,6 @@ export default function BloodRequestForum({
         description: data.description,
       };
       const safeData = bloodSeekerSchema.safeParse(modifiedData);
-      console.log(safeData.error);
       if (safeData.error) {
         Toast.show({
           type: 'error',
@@ -95,6 +89,7 @@ export default function BloodRequestForum({
         text1: 'নতুন আবেদন সফল!',
         text2: 'নতুন আবেদন সফল ভাবে পাঠানো হয়েছে',
       });
+      reset();
       navigation.navigate('Home', {refresh: true});
     } catch (error) {
       Toast.show({
@@ -508,7 +503,6 @@ export default function BloodRequestForum({
                       items={[
                         {label: 'পুরুষ', value: 'male'},
                         {label: 'মহিলা', value: 'female'},
-                        {label: 'অন্যান্য', value: 'other'},
                       ]}
                     />
                   </View>
