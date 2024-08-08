@@ -216,6 +216,7 @@ export default function ReviewForum({
                 backgroundColor: '#BF0000',
                 padding: 10,
                 marginRight: 10,
+                  width:'100%'
               }}>
               <MyText
                 style={{

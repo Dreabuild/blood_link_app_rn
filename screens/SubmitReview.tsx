@@ -231,7 +231,6 @@ export default function SubmitReview({
               style={{
                 backgroundColor: '#BF0000',
                 padding: 10,
-                marginRight: 10,
                 marginTop: 10,
               }}>
               <MyText
@@ -248,7 +247,6 @@ export default function SubmitReview({
               style={{
                 backgroundColor: '#F9E6E6',
                 padding: 10,
-                marginRight: 10,
                 marginTop: 10,
               }}>
               <MyText

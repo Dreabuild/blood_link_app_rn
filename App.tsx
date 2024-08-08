@@ -114,27 +114,6 @@ function DrawerContent({navigation}: DrawerNavigationProp<any>) {
               justifyContent: 'center',
               alignItems: 'center',
             }}
-            onPress={() => Linking.openURL('tel:09647186307')}>
-            <Feather name="phone" size={20} color="#BF0000" />
-            <MyText
-              style={{
-                marginLeft: 5,
-                color: '#BF0000',
-                fontFamily: 'Li Ador Noirrit Bold',
-              }}>
-              যোগাযোগ করুন
-            </MyText>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{
-              width: '100%',
-              height: 40,
-              backgroundColor: '#F9E6E6',
-              flexDirection: 'row',
-              padding: 5,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
             onPress={() => navigation.navigate('DonarRegistration')}>
             <Feather name="plus" size={20} color="#BF0000" />
             <MyText
@@ -157,13 +136,13 @@ function DrawerContent({navigation}: DrawerNavigationProp<any>) {
           }}>
           <TouchableOpacity
             onPress={() =>
-              Linking.openURL('https://www.bloodlinkfoundation.com')
+              Linking.openURL('https://www.bloodlinkapp.org/')
             }>
             <MyText style={{color: '#AE0000'}}>BloodLink Foundation</MyText>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() =>
-              Linking.openURL('https://bloodlinkfoundation.com/privacy-policy')
+              Linking.openURL('https://blorg.co/privacy-policy')
             }>
             <MyText style={{color: '#AE0000'}}>Privacy Policy</MyText>
           </TouchableOpacity>

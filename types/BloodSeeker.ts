@@ -32,7 +32,7 @@ export const bloodSeekerSchema = z
     mobile_number: z.array(z.string()).min(1),
     whatsapp_number: z.string(),
     facebook_account_url: z.string().url().optional(),
-    gender: z.enum(['male', 'female']).optional(),
+    gender: z.string().optional(),
     views_count: z.number().default(0),
     call_count: z.number().default(0),
     message_count: z.number().default(0),
