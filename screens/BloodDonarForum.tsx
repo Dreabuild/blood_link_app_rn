@@ -121,7 +121,7 @@ export default function BloodDonarForum({
                     placeholderTextColor={'#989898'}
                     style={{
                       color: '#000',
-                      borderColor: !error ? '#000' : '#BF0000',
+                        borderColor: !error ? '#DDD' : '#BF0000', borderRadius: 5,
                       borderWidth: 1,
                       padding: 10,
                       marginBottom: 20,
@@ -148,7 +148,7 @@ export default function BloodDonarForum({
                     placeholderTextColor={'#989898'}
                     style={{
                       color: '#000',
-                      borderColor: !error ? '#000' : '#BF0000',
+                        borderColor: !error ? '#DDD' : '#BF0000', borderRadius: 5,
                       borderWidth: 1,
                       padding: 10,
                       marginBottom: 20,
@@ -168,7 +168,7 @@ export default function BloodDonarForum({
                     style={{
                       marginBottom: 20,
                       borderWidth: 1,
-                      borderColor: !error ? '#000' : '#BF0000',
+                        borderColor: !error ? '#DDD' : '#BF0000', borderRadius: 5,
                     }}>
                     <RNPickerSelect
                       pickerProps={{
@@ -212,7 +212,7 @@ export default function BloodDonarForum({
                     style={{
                       marginBottom: 20,
                       borderWidth: 1,
-                      borderColor: !error ? '#000' : '#BF0000',
+                        borderColor: !error ? '#DDD' : '#BF0000', borderRadius: 5,
                     }}>
                     <RNPickerSelect
                       pickerProps={{
@@ -257,7 +257,7 @@ export default function BloodDonarForum({
                     placeholderTextColor={'#989898'}
                     style={{
                       color: '#000',
-                      borderColor: !error ? '#000' : '#BF0000',
+                        borderColor: !error ? '#DDD' : '#BF0000', borderRadius: 5,
                       borderWidth: 1,
                       padding: 10,
                       marginBottom: 20,
@@ -277,7 +277,7 @@ export default function BloodDonarForum({
                     style={{
                       marginBottom: 20,
                       borderWidth: 1,
-                      borderColor: !error ? '#000' : '#BF0000',
+                        borderColor: !error ? '#DDD' : '#BF0000', borderRadius: 5,
                     }}>
                     <RNPickerSelect
                       onValueChange={onChange}
@@ -315,7 +315,7 @@ export default function BloodDonarForum({
                     <View
                       style={{
                         borderWidth: 1,
-                        borderColor: !error ? '#000' : '#BF0000',
+                          borderColor: !error ? '#DDD' : '#BF0000', borderRadius: 5,
                         marginBottom: 20,
                         flexDirection: 'row',
                         justifyContent: 'space-between',
@@ -345,7 +345,6 @@ export default function BloodDonarForum({
               style={{
                 backgroundColor: '#BF0000',
                 padding: 10,
-                marginRight: 10,
               }}>
               <MyText
                 style={{
@@ -356,6 +355,22 @@ export default function BloodDonarForum({
                 সাবমিট
               </MyText>
             </TouchableOpacity>
+              <TouchableOpacity
+                  onPress={() => navigation.goBack()}
+                  style={{
+                      backgroundColor: '#F9E6E6',
+                      padding: 10,
+                      marginTop: 10,
+                  }}>
+                  <MyText
+                      style={{
+                          color: '#BF0000',
+                          textAlign: 'center',
+                          fontFamily: 'Li Ador Noirrit Bold',
+                      }}>
+                      ফিরে যাও
+                  </MyText>
+              </TouchableOpacity>
           </View>
         </ScrollView>
         <Footer navigation={navigation} />
