@@ -1,8 +1,9 @@
 /* eslint-disable prettier/prettier */
 import {DrawerNavigationProp} from '@react-navigation/drawer';
 import React from 'react';
-import {Image, TouchableOpacity, View} from 'react-native';
+import {Image, Linking, TouchableOpacity, View} from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
+import MyText from './MyText';
 
 export default function Header({navigation}: DrawerNavigationProp<any>) {
   return (
