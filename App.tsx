@@ -106,22 +106,6 @@ function DrawerContent({navigation}: DrawerNavigationProp<any>) {
         <View style={{width: '100%', paddingVertical: 10, gap: 10}}>
           <TouchableOpacity
             style={{
-              backgroundColor: '#E6F9EA',
-              padding: 5,
-              width: '100%',
-              height: 40,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-            onPress={() =>
-              Linking.openURL(
-                'https://www.whatsapp.com/channel/0029VafBUXv2v1InsGASJv1I',
-              )
-            }>
-            <Image source={require('./assets/WhatsApp.png')} height={45} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{
               width: '100%',
               height: 40,
               backgroundColor: '#F9E6E6',
@@ -129,7 +113,8 @@ function DrawerContent({navigation}: DrawerNavigationProp<any>) {
               padding: 5,
               justifyContent: 'center',
               alignItems: 'center',
-            }}>
+            }}
+            onPress={() => Linking.openURL('tel:09647186307')}>
             <Feather name="phone" size={20} color="#BF0000" />
             <MyText
               style={{
